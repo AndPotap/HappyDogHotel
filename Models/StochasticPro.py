@@ -34,6 +34,9 @@ class StochasticPro:
                        11: {'boost': 0.5},
                        12: {'boost': 1}}
 
+        self.general_dict = {}
+        self.cluster_dict = {}
+
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # ----------------------------------------------------------------------
     # Initialize the dictionary of rooms
@@ -96,6 +99,79 @@ class StochasticPro:
             return int(np.random.binomial(n=1, p=p, size=1))
         else:
             return int(np.random.binomial(n=1, p=success, size=1))
+    # ----------------------------------------------------------------------
+
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # Generate general lists
+    # ----------------------------------------------------------------------
+    def fill_in_general(self):
+        self.general_dict = {
+            'first_name': ['Michael', 'David', 'John', 'Robert', 'James',
+                           'William', 'Richard', 'Christopher', 'Peter',
+                           'Ted', 'Lisa', 'Mary', 'Maria', 'Susan', 'Karen',
+                           'Patricia', 'Linda', 'Donna', 'Sophia', 'Anna'],
+            'last_name': ['Smith', 'Johnson', 'Jones', 'Brown', 'Miller',
+                          'Wilson', 'Moore', 'Cooper', 'Carter', 'Perez',
+                          'Garcia', 'Lee', 'Lewis', 'Evans', 'Diaz',
+                          'Butler', 'Flores', 'Long', 'Powell', 'Ross',
+                          'Gray', 'Ramirez', 'Turner', 'Adams', 'King',
+                          'Collins', 'Sanders', 'Kelly', 'Froning',
+                          'Murphy', 'Xi', 'Chi', 'Pi', 'Tensor'],
+            'address': ['170 W 96th ST', '145 E 39th ST', '207 12th Ave',
+                        '214 E 10th ST', '1433 Bedford Ave', '60 Grand ST',
+                        '181 E 111th ST', '81 E 45th ST', '65th 4th Ave',
+                        '99 Gansevoort ST', '529 Broome ST',
+                        '287 Hudson ST'],
+            'phone': ['212-866-8000', '212-865-5700', '212-989-6363',
+                      '212-777-7018', '347-305-3233', '718-285-6180',
+                      '212-828-3647', '646-747-0801', '212-388-0088',
+                      '212-570-3670', '917-639-3089', '646-666-5096'],
+            'color': ['white', 'black', 'tan', 'grey', 'brindle'],
+            'dog_name': [('Bella', 'F'), ('Lucy', 'F'), ('Daisy', 'F'),
+                         ('Luna', 'F'), ('Sadie', 'F'), ('Molly', 'F'),
+                         ('Kiki', 'F'), ('Lili', 'F'), ('Bootie', 'F'),
+                         ('Max', 'M'), ('Charlie', 'F'), ('Tucker', 'M'),
+                         ('Buddy', 'M'), ('Oliver', 'M'), ('Bear', 'M'),
+                         ('Duke', 'M'), ('Dog', 'M'), ('Tupac', 'M')],
+            'country': ['US'],
+            'csz': [('Queens', 'NY', '11433'), ('Bronx', 'NY', '10701'),
+                    ('Bronx', 'NY', '10461'), ('Brooklyn', 'NY', '11216'),
+                    ('Stamford', 'CT', '06901'), ('NYC', 'NYC', '10027'),
+                    ('Hoboken', 'NJ', '07030'), ('Jersey City', 'NJ', '07302'),
+                    ('Long Island', 'NY', '11101'), ('Staten Island', 'NY', '10306'),
+                    ('Brooklyn', 'NY', '11249'), ('NYC', 'NY', '10024'),
+                    ('NYC', 'NY', '10014'), ('NYC', 'NY', '10009'),
+                    ('Brooklyn', 'NY', '11201'), ('NYC', 'NY', '10014'),
+                    ('NYC', 'NY', '10012'), ('NYC', 'NY', '10013')]}
+
+    def fill_in_cluster(self):
+        self.cluster_dict = {
+            1: {'prob': 0.25,
+                'breeds': ['Pug', 'Chihuahua', 'Bulldog', 'Pitbull',
+                           'Border Terrier', 'Pomeranian', 'Maltese'],
+                'dog_age': (8, 5 ** 2),
+                'brands': ['Eukanuba', 'Purina', 'WholeHearted']},
+            2: {'prob': 0.5,
+                'breeds': ['Labrador', 'Pug', 'Pitbull',
+                           'German Shepherd', 'Beagle',
+                           'Rottweiler', 'Chow chow'],
+                'dog_age': (8, 1 ** 2),
+                'brands': ['WholeHearted', 'Hills',
+                           'Acana', 'Instinct']},
+            3: {'prob': 0.65,
+                'breeds': ['Husky', 'Boxer', 'Bull terrier',
+                           'Malinois', 'Golden', 'Irish terrier',
+                           'Dalmatian', 'Pitbull', 'Pug'],
+                'dog_age': (7, 5 ** 2),
+                'brands': ['Royal Canin', 'WholeHearted', 'Hills',
+                           'Acana', 'Instinct']},
+            4: {'prob': 0.85,
+                'breeds': ['Doberman', 'Shiba Inu', 'Malinois',
+                           'Cane Corso', 'Bloodhound', 'Salukis',
+                           'Dogo Argentino', 'Bulldog'],
+                'dog_age': (10, 2 ** 2),
+                'brands': ['Raw Diet', 'WholeHearted', 'Orijen', 'Hills']}}
     # ----------------------------------------------------------------------
 
 # ===========================================================================
