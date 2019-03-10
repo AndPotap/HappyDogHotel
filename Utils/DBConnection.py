@@ -62,5 +62,6 @@ class DBConnection:
         self.cursor.execute(insert)
 
     def close_connection(self):
+        self.cursor.close()
         self.connection.close()
 # ===========================================================================
