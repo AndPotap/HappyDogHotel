@@ -25,4 +25,6 @@ from Models.StochasticPro import StochasticPro
 ins = StochasticPro()
 ins.initialize_room_dict()
 ins.add_reservation_periods()
+ins.fill_in_general()
+ins.fill_in_cluster()
 # ===========================================================================
