@@ -52,8 +52,8 @@ class StochasticPro:
             for v in values:
                 duration = v['duration']
 
-                p = self.determine_proba(room_type=room_type,
-                                         duration=duration)
+                p = self.determine_p(room_type=room_type,
+                                     duration=duration)
 
                 m = self.user_proportions.shape[0]
                 cluster = np.random.choice(a=m,
@@ -81,11 +81,18 @@ class StochasticPro:
     # ----------------------------------------------------------------------
     # Determine cluster probabilities
     # ----------------------------------------------------------------------
-    def determine_proba(self, room_type, duration):
-        # TODO: change the logic depending on room type and duration
-        m = self.user_proportions.shape[0]
-        p = np.array([1 for _ in range(m)])
-        p = p / np.sum(p)
+    @staticmethod
+    def determine_p(room_type, duration):
+        if room_type == 3:
+            p = np.array([0., 0., 0.1, 0.9])
+        elif (room_type == 2) and (duration > 15):
+            p = np.array([0., 0.5, 0.3, 0.2])
+        elif (room_type == 2) and (duration <= 15):
+            p = np.array([0.5, 0.3, 0.1, 0.1])
+        elif (room_type == 1) and (duration > 20):
+            p = np.array([0., 0.4, 0.4, 0.2])
+        else:
+            p = np.array([0.7, 0.2, 0.1, 0.])
         return p
     # ----------------------------------------------------------------------
 
