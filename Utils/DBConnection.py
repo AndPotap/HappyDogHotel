@@ -45,6 +45,36 @@ class DBConnection:
         self.cursor.execute(query=drop)
         self.cursor.execute(query=booking)
 
+    def create_users_dogs_table(self):
+        drop_u = "DROP TABLE IF EXISTS users"
+        drop_d = "DROP TABLE IF EXISTS dogs"
+        users = """CREATE TABLE users (
+                        client_id int,
+                        first_name text,
+                        last_name text,
+                        address text,
+                        city text,
+                        state text,
+                        zipcode text,
+                        phone text,
+                        birthdate date,
+                        PRIMARY KEY (client_id))"""
+
+        dogs = """CREATE TABLE dogs (
+                            client_id int,
+                            dog_id int,
+                            dog_name text,
+                            breed text,
+                            gender text,
+                            color text,
+                            d_birthdate date,
+                            brand text,
+                            PRIMARY KEY (client_id, dog_id))"""
+        self.cursor.execute(query=drop_u)
+        self.cursor.execute(query=drop_d)
+        self.cursor.execute(query=users)
+        self.cursor.execute(query=dogs)
+
     def insert_into_booking(self, room_dict, room_id):
         # Pass the values into strings
         room_id = str(room_id)
