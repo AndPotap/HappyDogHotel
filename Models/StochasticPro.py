@@ -38,8 +38,56 @@ class StochasticPro:
         self.cluster_dict = {}
         self.total_users = total_users
         self.user_proportions = user_proportions
+        self.user_clusters = {}
         self.users = {}
         self.dogs = {}
+
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # Determine who-when
+    # ----------------------------------------------------------------------
+    def determine_who_when(self):
+        for k, values in self.room_process.items():
+            room_type = self.room_description[k]['type']
+            for v in values:
+                duration = v['duration']
+
+                p = self.determine_proba(room_type=room_type,
+                                         duration=duration)
+
+                m = self.user_proportions.shape[0]
+                cluster = np.random.choice(a=m,
+                                           size=1,
+                                           p=p)
+                cluster = cluster + 1
+                user, dog = self.tell_user_dog(cluster=cluster[0])
+                v['client_id'] = user
+                v['dog_id'] = dog
+    # ----------------------------------------------------------------------
+
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # Tell user and dog
+    # ----------------------------------------------------------------------
+    def tell_user_dog(self, cluster):
+        users = self.user_clusters[cluster]
+        users_n = len(users)
+        idx = np.random.choice(a=users_n, size=1)[0]
+        user = int(users[idx])
+        return user, user
+    # ----------------------------------------------------------------------
+
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # Determine cluster probabilities
+    # ----------------------------------------------------------------------
+    def determine_proba(self, room_type, duration):
+        # TODO: change the logic depending on room type and duration
+        m = self.user_proportions.shape[0]
+        p = np.array([1 for _ in range(m)])
+        p = p / np.sum(p)
+        return p
+    # ----------------------------------------------------------------------
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # ----------------------------------------------------------------------
@@ -122,6 +170,10 @@ class StochasticPro:
                                       size=self.total_users,
                                       replace=True,
                                       p=self.user_proportions)
+        user_types = user_types + 1
+        for r in range(user_n):
+            aux = list(np.where(user_types == r + 1)[0])
+            self.user_clusters.update({r + 1: aux})
 
         # Append the placeholders
         for i in range(self.total_users):
@@ -147,11 +199,9 @@ class StochasticPro:
         self.input_general()
 
         # Input the cluster information
-        user_types = user_types + 1
         for j in range(user_n):
-            aux = list(np.where(user_types == j + 1)[0])
-            self.input_cluster(cluster=j+1, user_list=aux)
-
+            aux = self.user_clusters[j + 1]
+            self.input_cluster(cluster=j + 1, user_list=aux)
     # ----------------------------------------------------------------------
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -188,7 +238,6 @@ class StochasticPro:
                                           size=self.total_users)
                 for i in range(self.total_users):
                     self.users[i][k] = working[sample[i]]
-
     # ----------------------------------------------------------------------
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -246,7 +295,6 @@ class StochasticPro:
             days = int(round((365 * sample_ages[i])))
             birth = today - datetime.timedelta(days=days)
             self.users[user_id]['birthdate'] = birth.isoformat()
-
     # ----------------------------------------------------------------------
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
