@@ -270,7 +270,7 @@ class StochasticPro:
                       '212-777-7018', '347-305-3233', '718-285-6180',
                       '212-828-3647', '646-747-0801', '212-388-0088',
                       '212-570-3670', '917-639-3089', '646-666-5096'],
-            'color': ['white', 'black', 'tan', 'grey', 'brindle'],
+            'color': ['White', 'Black', 'Tan', 'Grey', 'Brindle'],
             'dog_name': [('Bella', 'F'), ('Lucy', 'F'), ('Daisy', 'F'),
                          ('Luna', 'F'), ('Sadie', 'F'), ('Molly', 'F'),
                          ('Kiki', 'F'), ('Lili', 'F'), ('Bootie', 'F'),
