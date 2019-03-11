@@ -27,4 +27,5 @@ ins = StochasticPro(total_users=total_users,
                     user_proportions=user_proportions)
 ins.add_reservation_periods()
 ins.generate_users()
+ins.determine_who_when()
 # ===========================================================================
