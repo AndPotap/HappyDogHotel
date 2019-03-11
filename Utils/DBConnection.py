@@ -24,8 +24,6 @@ class DBConnection:
                  database='andpotap',
                  user='andpotap',
                  port='5432'):
-        # conn = "dbname='andpotap' user='andpotap' host='localhost' port='5432'"
-        # self.connection = psycopg2.connect(conn)
         self.connection = psycopg2.connect(host=host,
                                            database=database,
                                            user=user,
@@ -33,6 +31,10 @@ class DBConnection:
         self.connection.autocommit = True
         self.cursor = self.connection.cursor()
 
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # Create the booking table
+    # ----------------------------------------------------------------------
     def create_booking_table(self):
         drop = "DROP TABLE IF EXISTS booking"
         booking = """CREATE TABLE booking (
@@ -44,7 +46,12 @@ class DBConnection:
                         PRIMARY KEY (date_from, date_to, room_id, dog_id))"""
         self.cursor.execute(query=drop)
         self.cursor.execute(query=booking)
+    # ----------------------------------------------------------------------
 
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # Create users and dogs tables
+    # ----------------------------------------------------------------------
     def create_users_dogs_table(self):
         drop_u = "DROP TABLE IF EXISTS users"
         drop_d = "DROP TABLE IF EXISTS dogs"
@@ -74,7 +81,12 @@ class DBConnection:
         self.cursor.execute(query=drop_d)
         self.cursor.execute(query=users)
         self.cursor.execute(query=dogs)
+    # ----------------------------------------------------------------------
 
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # Insert into the booking table
+    # ----------------------------------------------------------------------
     def insert_into_booking(self, room_dict, room_id):
         # Pass the values into strings
         room_id = str(room_id)
@@ -90,7 +102,12 @@ class DBConnection:
 
         # Execute
         self.cursor.execute(insert)
+    # ----------------------------------------------------------------------
 
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # Insert into users
+    # ----------------------------------------------------------------------
     def insert_into_users(self, user_dict, user_id):
         # Pass the values into strings
         rubrics = ['first_name', 'last_name', 'address',
@@ -107,6 +124,7 @@ class DBConnection:
 
         # Execute
         self.cursor.execute(insert)
+    # ----------------------------------------------------------------------
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # ----------------------------------------------------------------------
