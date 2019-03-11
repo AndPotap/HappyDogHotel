@@ -60,6 +60,9 @@ class StochasticPro:
     # Add blocks
     # ----------------------------------------------------------------------
     def add_reservation_periods(self):
+
+        self.initialize_room_dict()
+
         for k in self.room_description.keys():
             t = self.room_description[k]['type']
             mu = self.room_type[t]['params'][0]
@@ -110,6 +113,10 @@ class StochasticPro:
     # Generate users
     # ----------------------------------------------------------------------
     def generate_users(self):
+
+        self.fill_in_general()
+        self.fill_in_cluster()
+
         user_n = self.user_proportions.shape[0]
         user_types = np.random.choice(a=user_n,
                                       size=self.total_users,
