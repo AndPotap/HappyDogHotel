@@ -91,7 +91,49 @@ class DBConnection:
         # Execute
         self.cursor.execute(insert)
 
+    def insert_into_users(self, user_dict, user_id):
+        # Pass the values into strings
+        rubrics = ['first_name', 'last_name', 'address',
+                   'city', 'state', 'zipcode', 'phone',
+                   'birthdate']
+
+        # Create the values
+        tup = self.generate_tuple(content=user_dict[user_id],
+                                  rubrics=rubrics,
+                                  idx=[user_id])
+
+        # Create the command
+        insert = "INSERT INTO users VALUES " + tup
+
+        # Execute
+        self.cursor.execute(insert)
+
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # Close the connection
+    # ----------------------------------------------------------------------
     def close_connection(self):
         self.cursor.close()
         self.connection.close()
+    # ----------------------------------------------------------------------
+
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # Create insertion tuple
+    # ----------------------------------------------------------------------
+    @staticmethod
+    def generate_tuple(content, rubrics, idx):
+        tup = "("
+        for i in range(len(idx)):
+            tup += str(idx[i]) + ', '
+
+        tup = tup[:-2]
+        for rub in rubrics:
+            a = content[rub]
+            a = "'" + a + "'"
+            tup += ', ' + a
+
+        tup += ")"
+        return tup
+    # ----------------------------------------------------------------------
 # ===========================================================================
