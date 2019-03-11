@@ -193,6 +193,7 @@ class StochasticPro:
         prob = self.cluster_dict[cluster]['prob']
         breeds = self.cluster_dict[cluster]['breeds']
         dog_age = self.cluster_dict[cluster]['dog_age']
+        age = self.cluster_dict[cluster]['age']
         brands = self.cluster_dict[cluster]['brands']
         user_n = len(user_list)
         csz = self.general_dict['csz']
@@ -203,11 +204,20 @@ class StochasticPro:
                                          size=user_n)
         sample_brands = np.random.choice(a=len(brands),
                                          size=user_n)
-        sample_ages = np.random.normal(loc=dog_age[0],
-                                       scale=dog_age[1],
+
+        # Sample the ages and correct
+        sample_dog_ages = np.random.normal(loc=dog_age[0],
+                                           scale=dog_age[1],
+                                           size=user_n)
+        mask = sample_dog_ages <= 0
+        sample_dog_ages[mask] = 0.05
+
+        sample_ages = np.random.normal(loc=age[0],
+                                       scale=age[1],
                                        size=user_n)
         mask = sample_ages <= 0
-        sample_ages[mask] = 0.05
+        sample_ages[mask] = np.abs(sample_ages[mask])
+
         sample_csz = np.random.binomial(n=csz_n,
                                         p=prob,
                                         size=user_n)
@@ -222,9 +232,13 @@ class StochasticPro:
             self.dogs[dog_id]['breed'] = breeds[sample_breeds[i]]
             self.dogs[dog_id]['brand'] = brands[sample_brands[i]]
             today = datetime.date(2019, 1, 1)
-            days = int(round((365 * sample_ages[i])))
+            days = int(round((365 * sample_dog_ages[i])))
             birth = today - datetime.timedelta(days=days)
             self.dogs[dog_id]['d_birthdate'] = birth.isoformat()
+
+            days = int(round((365 * sample_ages[i])))
+            birth = today - datetime.timedelta(days=days)
+            self.users[user_id]['birthdate'] = birth.isoformat()
 
     # ----------------------------------------------------------------------
 
@@ -285,12 +299,14 @@ class StochasticPro:
                 'breeds': ['Pug', 'Chihuahua', 'Bulldog', 'Pitbull',
                            'Border Terrier', 'Pomeranian', 'Maltese'],
                 'dog_age': (8, 5),
+                'age': (25, 5),
                 'brands': ['Eukanuba', 'Purina', 'WholeHearted']},
             2: {'prob': 0.5,
                 'breeds': ['Labrador', 'Pug', 'Pitbull',
                            'German Shepherd', 'Beagle',
                            'Rottweiler', 'Chow chow'],
                 'dog_age': (8, 1),
+                'age': (40, 5),
                 'brands': ['WholeHearted', 'Hills',
                            'Acana', 'Instinct']},
             3: {'prob': 0.65,
@@ -298,6 +314,7 @@ class StochasticPro:
                            'Malinois', 'Golden', 'Irish terrier',
                            'Dalmatian', 'Pitbull', 'Pug'],
                 'dog_age': (7, 5),
+                'age': (50, 10),
                 'brands': ['Royal Canin', 'WholeHearted', 'Hills',
                            'Acana', 'Instinct']},
             4: {'prob': 0.85,
@@ -305,6 +322,7 @@ class StochasticPro:
                            'Cane Corso', 'Bloodhound', 'Salukis',
                            'Dogo Argentino', 'Bulldog'],
                 'dog_age': (10, 2),
+                'age': (40, 10),
                 'brands': ['Raw Diet', 'WholeHearted', 'Orijen', 'Hills']}}
     # ----------------------------------------------------------------------
 
