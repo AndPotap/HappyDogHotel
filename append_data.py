@@ -10,7 +10,7 @@
 # ===========================================================================
 # Imports
 # ===========================================================================
-# import numpy as np
+import numpy as np
 from Models.StochasticPro import StochasticPro
 from Utils.DBConnection import DBConnection
 # ===========================================================================
@@ -18,7 +18,8 @@ from Utils.DBConnection import DBConnection
 # ===========================================================================
 # Set parameters
 # ===========================================================================
-
+total_users = 10
+user_proportions = np.array([0.4, 0.3, 0.2, 0.1])
 # ===========================================================================
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # ===========================================================================
@@ -27,11 +28,25 @@ from Utils.DBConnection import DBConnection
 # Initialize the connection to the database
 conn = DBConnection()
 conn.create_booking_table()
+conn.create_users_dogs_table()
 
 # Initialize the stochastic process class
-ins = StochasticPro()
+
+ins = StochasticPro(total_users=total_users,
+                    user_proportions=user_proportions)
 ins.initialize_room_dict()
 ins.add_reservation_periods()
+ins.fill_in_general()
+ins.fill_in_cluster()
+ins.generate_users()
+# ===========================================================================
+# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# ===========================================================================
+# Insert into users
+# ===========================================================================
+for i in ins.users.keys():
+    conn.insert_into_users(user_dict=ins.users, user_id=i)
+    conn.insert_into_dogs(dog_dict=ins.dogs, dog_id=i)
 # ===========================================================================
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # ===========================================================================
