@@ -20,7 +20,7 @@ import datetime
 
 class StochasticPro:
 
-    def __init__(self, seed=42):
+    def __init__(self, total_users, user_proportions, seed=42):
         self.room_process = {}
         np.random.seed(seed=seed)
         self.room_description = {}
@@ -36,6 +36,10 @@ class StochasticPro:
 
         self.general_dict = {}
         self.cluster_dict = {}
+        self.total_users = total_users
+        self.user_proportions = user_proportions
+        self.users = {}
+        self.dogs = {}
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # ----------------------------------------------------------------------
@@ -103,6 +107,129 @@ class StochasticPro:
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # ----------------------------------------------------------------------
+    # Generate users
+    # ----------------------------------------------------------------------
+    def generate_users(self):
+        user_n = self.user_proportions.shape[0]
+        user_types = np.random.choice(a=user_n,
+                                      size=self.total_users,
+                                      replace=True,
+                                      p=self.user_proportions)
+
+        # Append the placeholders
+        for i in range(self.total_users):
+            update = {i: {'first_name': '',
+                          'last_name': '',
+                          'address': '',
+                          'city': '',
+                          'state': '',
+                          'zipcode': '',
+                          'country': '',
+                          'phone': '',
+                          'birthdate': ''}}
+            update_2 = {i: {'dog_name': '',
+                            'breed': '',
+                            'gender': '',
+                            'color': '',
+                            'd_birthdate': '',
+                            'brand': ''}}
+            self.users.update(update)
+            self.dogs.update(update_2)
+
+        # Input the general information
+        self.input_general()
+
+        # Input the cluster information
+        user_types = user_types + 1
+        for j in range(user_n):
+            aux = list(np.where(user_types == j + 1)[0])
+            self.input_cluster(cluster=j+1, user_list=aux)
+
+    # ----------------------------------------------------------------------
+
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # Inputs the general information
+    # ----------------------------------------------------------------------
+    def input_general(self):
+        for k in self.general_dict.keys():
+            if k == 'csz':
+                for i in range(self.total_users):
+                    self.users[i]['country'] = 'US'
+
+            elif k == 'dog_name':
+                working = self.general_dict[k]
+                working_n = len(working)
+                sample = np.random.choice(a=working_n,
+                                          size=self.total_users)
+                for i in range(self.total_users):
+                    name_gender = working[sample[i]]
+                    self.dogs[i]['dog_name'] = name_gender[0]
+                    self.dogs[i]['gender'] = name_gender[1]
+            elif k == 'color':
+                working = self.general_dict[k]
+                working_n = len(working)
+                sample = np.random.choice(a=working_n,
+                                          size=self.total_users)
+                for i in range(self.total_users):
+                    color = working[sample[i]]
+                    self.dogs[i]['color'] = color
+            else:
+                working = self.general_dict[k]
+                working_n = len(working)
+                sample = np.random.choice(a=working_n,
+                                          size=self.total_users)
+                for i in range(self.total_users):
+                    self.users[i][k] = working[sample[i]]
+
+    # ----------------------------------------------------------------------
+
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # Input the specifics
+    # ----------------------------------------------------------------------
+    def input_cluster(self, cluster, user_list):
+        # Load-off the specific cluster variables
+        prob = self.cluster_dict[cluster]['prob']
+        breeds = self.cluster_dict[cluster]['breeds']
+        dog_age = self.cluster_dict[cluster]['dog_age']
+        brands = self.cluster_dict[cluster]['brands']
+        user_n = len(user_list)
+        csz = self.general_dict['csz']
+        csz_n = len(csz)
+
+        # Generate the samples
+        sample_breeds = np.random.choice(a=len(breeds),
+                                         size=user_n)
+        sample_brands = np.random.choice(a=len(brands),
+                                         size=user_n)
+        sample_ages = np.random.normal(loc=dog_age[0],
+                                       scale=dog_age[1],
+                                       size=user_n)
+        mask = sample_ages <= 0
+        sample_ages[mask] = 0.05
+        sample_csz = np.random.binomial(n=csz_n,
+                                        p=prob,
+                                        size=user_n)
+
+        for i in range(user_n):
+            user_id = user_list[i]
+            dog_id = user_list[i]
+            csz_i = csz[sample_csz[i]]
+            self.users[user_id]['city'] = csz_i[0]
+            self.users[user_id]['state'] = csz_i[1]
+            self.users[user_id]['zipcode'] = csz_i[2]
+            self.dogs[dog_id]['breed'] = breeds[sample_breeds[i]]
+            self.dogs[dog_id]['brand'] = brands[sample_brands[i]]
+            today = datetime.date(2019, 1, 1)
+            days = int(round((365 * sample_ages[i])))
+            birth = today - datetime.timedelta(days=days)
+            self.dogs[dog_id]['d_birthdate'] = birth.isoformat()
+
+    # ----------------------------------------------------------------------
+
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
     # Generate general lists
     # ----------------------------------------------------------------------
     def fill_in_general(self):
@@ -138,7 +265,6 @@ class StochasticPro:
                          ('Buddy', 'M'), ('Oliver', 'M'),
                          ('Bear', 'M'),
                          ('Duke', 'M'), ('Dog', 'M'), ('Tupac', 'M')],
-            'country': ['US'],
             'csz': [('Queens', 'NY', '11433'),
                     ('Bronx', 'NY', '10701'),
                     ('Bronx', 'NY', '10461'),
@@ -158,27 +284,27 @@ class StochasticPro:
             1: {'prob': 0.25,
                 'breeds': ['Pug', 'Chihuahua', 'Bulldog', 'Pitbull',
                            'Border Terrier', 'Pomeranian', 'Maltese'],
-                'dog_age': (8, 5 ** 2),
+                'dog_age': (8, 5),
                 'brands': ['Eukanuba', 'Purina', 'WholeHearted']},
             2: {'prob': 0.5,
                 'breeds': ['Labrador', 'Pug', 'Pitbull',
                            'German Shepherd', 'Beagle',
                            'Rottweiler', 'Chow chow'],
-                'dog_age': (8, 1 ** 2),
+                'dog_age': (8, 1),
                 'brands': ['WholeHearted', 'Hills',
                            'Acana', 'Instinct']},
             3: {'prob': 0.65,
                 'breeds': ['Husky', 'Boxer', 'Bull terrier',
                            'Malinois', 'Golden', 'Irish terrier',
                            'Dalmatian', 'Pitbull', 'Pug'],
-                'dog_age': (7, 5 ** 2),
+                'dog_age': (7, 5),
                 'brands': ['Royal Canin', 'WholeHearted', 'Hills',
                            'Acana', 'Instinct']},
             4: {'prob': 0.85,
                 'breeds': ['Doberman', 'Shiba Inu', 'Malinois',
                            'Cane Corso', 'Bloodhound', 'Salukis',
                            'Dogo Argentino', 'Bulldog'],
-                'dog_age': (10, 2 ** 2),
+                'dog_age': (10, 2),
                 'brands': ['Raw Diet', 'WholeHearted', 'Orijen', 'Hills']}}
     # ----------------------------------------------------------------------
 
