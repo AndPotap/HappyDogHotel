@@ -16,17 +16,15 @@ from Models.StochasticPro import StochasticPro
 # ===========================================================================
 # Set parameters
 # ===========================================================================
-
+user_proportions = np.array([0.4, 0.3, 0.2, 0.1])
+total_users = 100
 # ===========================================================================
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # ===========================================================================
 # Load the data
 # ===========================================================================
-user_proportions = np.array([0.4, 0.3, 0.2, 0.1])
-ins = StochasticPro(total_users=100, user_proportions=user_proportions)
-ins.initialize_room_dict()
+ins = StochasticPro(total_users=total_users,
+                    user_proportions=user_proportions)
 ins.add_reservation_periods()
-ins.fill_in_general()
-ins.fill_in_cluster()
 ins.generate_users()
 # ===========================================================================
