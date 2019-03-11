@@ -128,6 +128,27 @@ class DBConnection:
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # ----------------------------------------------------------------------
+    # Insert into dogs
+    # ----------------------------------------------------------------------
+    def insert_into_dogs(self, dog_dict, dog_id):
+        # Pass the values into strings
+        rubrics = ['dog_name', 'breed', 'gender', 'color',
+                   'd_birthdate', 'brand']
+
+        # Create the values
+        tup = self.generate_tuple(content=dog_dict[dog_id],
+                                  rubrics=rubrics,
+                                  idx=[dog_id, dog_id])
+
+        # Create the command
+        insert = "INSERT INTO dogs VALUES " + tup
+
+        # Execute
+        self.cursor.execute(insert)
+    # ----------------------------------------------------------------------
+
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
     # Close the connection
     # ----------------------------------------------------------------------
     def close_connection(self):
