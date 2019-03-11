@@ -20,7 +20,11 @@ import datetime
 
 class StochasticPro:
 
-    def __init__(self, total_users, user_proportions, seed=42):
+    def __init__(self, total_users,
+                 user_proportions,
+                 start_date=(2018, 1, 1),
+                 simulation_days=365,
+                 seed=42):
         self.room_process = {}
         np.random.seed(seed=seed)
         self.room_description = {}
@@ -33,6 +37,11 @@ class StochasticPro:
                        8: {'boost': 0.3},
                        11: {'boost': 0.5},
                        12: {'boost': 1}}
+
+        self.start_date = datetime.date(start_date[0],
+                                        start_date[1],
+                                        start_date[2])
+        self.simulation_days = simulation_days
 
         self.general_dict = {}
         self.cluster_dict = {}
@@ -125,10 +134,10 @@ class StochasticPro:
             success = self.room_type[t]['success']
             p = r / (mu + r)
             sims = np.random.negative_binomial(n=r, p=p, size=self.sim_n)
-            stop = (np.cumsum(sims) < 365) & (sims > 0)
+            stop = (np.cumsum(sims) < self.simulation_days) & (sims > 0)
             sub_sims = sims[stop]
             process_list = []
-            start_date = datetime.date(2018, 1, 1)
+            start_date = self.start_date
             m = sub_sims.shape[0]
             for i in range(m):
                 days = int(sub_sims[i])
