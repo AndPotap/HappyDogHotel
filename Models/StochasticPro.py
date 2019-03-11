@@ -284,6 +284,7 @@ class StochasticPro:
         sample_csz = np.random.binomial(n=csz_n,
                                         p=prob,
                                         size=user_n)
+        sample_csz = sample_csz - 1
 
         for i in range(user_n):
             user_id = user_list[i]
