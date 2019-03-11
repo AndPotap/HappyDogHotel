@@ -9,7 +9,7 @@
 # ===========================================================================
 # Imports
 # ===========================================================================
-# import numpy as np
+import numpy as np
 from Models.StochasticPro import StochasticPro
 # ===========================================================================
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -22,9 +22,11 @@ from Models.StochasticPro import StochasticPro
 # ===========================================================================
 # Load the data
 # ===========================================================================
-ins = StochasticPro()
+user_proportions = np.array([0.4, 0.3, 0.2, 0.1])
+ins = StochasticPro(total_users=100, user_proportions=user_proportions)
 ins.initialize_room_dict()
 ins.add_reservation_periods()
 ins.fill_in_general()
 ins.fill_in_cluster()
+ins.generate_users()
 # ===========================================================================
