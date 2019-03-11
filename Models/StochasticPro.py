@@ -283,7 +283,7 @@ class StochasticPro:
                     ('Bronx', 'NY', '10701'),
                     ('Bronx', 'NY', '10461'),
                     ('Brooklyn', 'NY', '11216'),
-                    ('Stamford', 'CT', '06901'), ('NYC', 'NYC', '10027'),
+                    ('Stamford', 'CT', '06901'), ('NYC', 'NY', '10027'),
                     ('Hoboken', 'NJ', '07030'),
                     ('Jersey City', 'NJ', '07302'),
                     ('Long Island', 'NY', '11101'),
