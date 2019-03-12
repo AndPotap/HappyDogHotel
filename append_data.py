@@ -18,7 +18,7 @@ from Utils.DBConnection import DBConnection
 # ===========================================================================
 # Set parameters
 # ===========================================================================
-total_users = 500
+total_users = 250
 user_proportions = np.array([0.4, 0.3, 0.2, 0.1])
 # ===========================================================================
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -28,6 +28,7 @@ user_proportions = np.array([0.4, 0.3, 0.2, 0.1])
 # Initialize the connection to the database
 # conn = DBConnection(instance=True)  # do not forget to add password
 conn = DBConnection()
+conn.drop_all()
 conn.create_booking_table()
 conn.create_users_dogs_table()
 
