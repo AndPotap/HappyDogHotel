@@ -23,11 +23,22 @@ class DBConnection:
                  host='localhost',
                  database='andpotap',
                  user='andpotap',
-                 port='5432'):
-        self.connection = psycopg2.connect(host=host,
-                                           database=database,
-                                           user=user,
-                                           port=port)
+                 port='5432',
+                 instance=False):
+        if instance:
+            host = 'w4111.cisxo09blonu.us-east-1.rds.amazonaws.com'
+            database = 'w4111'
+            user = 'ap3635'
+            password = '3nBRYzgtGc'
+            self.connection = psycopg2.connect(host=host,
+                                               database=database,
+                                               user=user,
+                                               password=password)
+        else:
+            self.connection = psycopg2.connect(host=host,
+                                               database=database,
+                                               user=user,
+                                               port=port)
         self.connection.autocommit = True
         self.cursor = self.connection.cursor()
 
