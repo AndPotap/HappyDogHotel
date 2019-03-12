@@ -105,7 +105,7 @@ class DBConnection:
     def create_rooms_table(self):
         rooms = """CREATE TABLE rooms (
                         room_id int,
-                        room_type text,
+                        room_type int,
                         price float,
                         PRIMARY KEY (room_id))"""
         self.cursor.execute(query=rooms)
@@ -164,6 +164,27 @@ class DBConnection:
                         PRIMARY KEY (employee_id, dog_id, 
                                      date_to, date_from))"""
         self.cursor.execute(query=assigned)
+    # ----------------------------------------------------------------------
+
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # Insert into rooms
+    # ----------------------------------------------------------------------
+    def insert_into_rooms(self, room_dict, room_id):
+        # Pass the rubrics
+        rubrics = ['type', 'price']
+
+        # Create the values
+        tup = self.generate_tuple(content=room_dict[room_id],
+                                  rubrics=rubrics,
+                                  idx=[room_id],
+                                  room=True)
+
+        # Create the command
+        insert = "INSERT INTO rooms VALUES " + tup
+
+        # Execute
+        self.cursor.execute(insert)
     # ----------------------------------------------------------------------
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -244,7 +265,7 @@ class DBConnection:
     # Create insertion tuple
     # ----------------------------------------------------------------------
     @staticmethod
-    def generate_tuple(content, rubrics, idx):
+    def generate_tuple(content, rubrics, idx, room=False):
         tup = "("
         for i in range(len(idx)):
             tup += str(idx[i]) + ', '
@@ -252,7 +273,10 @@ class DBConnection:
         tup = tup[:-2]
         for rub in rubrics:
             a = content[rub]
-            a = "'" + a + "'"
+            if room:
+                a = str(a)
+            else:
+                a = "'" + a + "'"
             tup += ', ' + a
 
         tup += ")"
