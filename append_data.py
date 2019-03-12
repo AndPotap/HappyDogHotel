@@ -29,8 +29,7 @@ user_proportions = np.array([0.4, 0.3, 0.2, 0.1])
 # conn = DBConnection(instance=True)  # do not forget to add password
 conn = DBConnection()
 conn.drop_all()
-conn.create_booking_table()
-conn.create_users_dogs_table()
+conn.create_all()
 
 # Initialize the stochastic process class
 
