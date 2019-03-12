@@ -54,20 +54,17 @@ class DBConnection:
             query = "DROP TABLE IF EXISTS " + drop
             self.cursor.execute(query=query)
     # ----------------------------------------------------------------------
-
+    
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # ----------------------------------------------------------------------
-    # Create the booking table
+    # Create all the tables
     # ----------------------------------------------------------------------
-    def create_booking_table(self):
-        booking = """CREATE TABLE booking (
-                        date_from date,
-                        date_to date,
-                        room_id int,
-                        client_id int,
-                        dog_id int,
-                        PRIMARY KEY (date_from, date_to, room_id, dog_id))"""
-        self.cursor.execute(query=booking)
+    def create_all(self):
+        self.create_users_dogs_table()
+        self.create_rooms_table()
+        self.create_bookings_table()
+        self.create_employees_table()
+        self.create_assigned_table()
     # ----------------------------------------------------------------------
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -89,7 +86,7 @@ class DBConnection:
 
         dogs = """CREATE TABLE dogs (
                             client_id int,
-                            dog_id int,
+                            dog_id int UNIQUE,
                             dog_name text,
                             breed text,
                             gender text,
@@ -99,6 +96,74 @@ class DBConnection:
                             PRIMARY KEY (client_id, dog_id))"""
         self.cursor.execute(query=users)
         self.cursor.execute(query=dogs)
+    # ----------------------------------------------------------------------
+
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # Create rooms table
+    # ----------------------------------------------------------------------
+    def create_rooms_table(self):
+        rooms = """CREATE TABLE rooms (
+                        room_id int,
+                        room_type text,
+                        price float,
+                        PRIMARY KEY (room_id))"""
+        self.cursor.execute(query=rooms)
+    # ----------------------------------------------------------------------
+
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # Create the booking table
+    # ----------------------------------------------------------------------
+    def create_bookings_table(self):
+        bookings = """CREATE TABLE bookings (
+                        date_from date,
+                        date_to date,
+                        room_id int,
+                        client_id int NOT NULL,
+                        dog_id int,
+                        FOREIGN KEY (room_id) REFERENCES rooms (room_id),
+                        FOREIGN KEY (client_id, dog_id) 
+                            REFERENCES dogs (client_id, dog_id),
+                        PRIMARY KEY (date_from, date_to, room_id, dog_id)
+                        )"""
+        self.cursor.execute(query=bookings)
+    # ----------------------------------------------------------------------
+
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # Create employees table
+    # ----------------------------------------------------------------------
+    def create_employees_table(self):
+        employees = """CREATE TABLE employees (
+                        employee_id int,
+                        e_name text,
+                        phone text,
+                        address text,
+                        city text,
+                        state text,
+                        zipcode text,
+                        hired_date date,
+                        PRIMARY KEY (employee_id))"""
+        self.cursor.execute(query=employees)
+    # ----------------------------------------------------------------------
+
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # Create assigned table
+    # ----------------------------------------------------------------------
+    def create_assigned_table(self):
+        assigned = """CREATE TABLE assigned (
+                        employee_id int,
+                        dog_id int,
+                        date_from date,
+                        date_to date,
+                        FOREIGN KEY (employee_id) 
+                            REFERENCES employees(employee_id),
+                        FOREIGN KEY (dog_id) REFERENCES dogs(dog_id),
+                        PRIMARY KEY (employee_id, dog_id, 
+                                     date_to, date_from))"""
+        self.cursor.execute(query=assigned)
     # ----------------------------------------------------------------------
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -116,7 +181,7 @@ class DBConnection:
         # Create the command
         tup = "(" + "'" + date_from + "'" + ', ' + "'" + date_to + "'" + \
               ', ' + room_id + ', ' + client_id + ', ' + dog_id + ")"
-        insert = "INSERT INTO booking VALUES " + tup
+        insert = "INSERT INTO bookings VALUES " + tup
 
         # Execute
         self.cursor.execute(insert)
