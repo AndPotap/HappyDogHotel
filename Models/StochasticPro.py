@@ -112,11 +112,14 @@ class StochasticPro:
     def initialize_room_dict(self, limits=(9, 17), total=20):
         for i in range(total):
             if i <= limits[0]:
-                self.room_description.update({i: {'type': 1}})
+                self.room_description.update({i: {'type': 1,
+                                                  'price': 99.99}})
             elif i <= limits[1]:
-                self.room_description.update({i: {'type': 2}})
+                self.room_description.update({i: {'type': 2,
+                                                  'price': 199.99}})
             else:
-                self.room_description.update({i: {'type': 3}})
+                self.room_description.update({i: {'type': 3,
+                                                  'price': 399.99}})
     # ----------------------------------------------------------------------
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
