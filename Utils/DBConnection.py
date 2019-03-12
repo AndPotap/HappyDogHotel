@@ -20,6 +20,7 @@ import psycopg2
 class DBConnection:
 
     def __init__(self,
+                 password='',
                  host='localhost',
                  database='andpotap',
                  user='andpotap',
@@ -29,7 +30,7 @@ class DBConnection:
             host = 'w4111.cisxo09blonu.us-east-1.rds.amazonaws.com'
             database = 'w4111'
             user = 'ap3635'
-            password = '3nBRYzgtGc'
+            password = password
             self.connection = psycopg2.connect(host=host,
                                                database=database,
                                                user=user,
