@@ -50,6 +50,9 @@ class StochasticPro:
         self.user_clusters = {}
         self.users = {}
         self.dogs = {}
+        self.employees_n = 20
+        self.employees = {}
+        self.employees_dict = {}
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # ----------------------------------------------------------------------
@@ -222,6 +225,31 @@ class StochasticPro:
             aux = self.user_clusters[j + 1]
             self.input_cluster(cluster=j + 1, user_list=aux)
     # ----------------------------------------------------------------------
+    
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # Generate employees
+    # ----------------------------------------------------------------------
+    def generate_employees(self):
+
+        self.fill_in_employees()
+
+        # Append the placeholders
+        for i in range(self.employees_n):
+            update = {i: {'first_name': '',
+                          'last_name': '',
+                          'address': '',
+                          'city': '',
+                          'state': '',
+                          'zipcode': '',
+                          'country': '',
+                          'phone': '',
+                          'hired_date': ''}}
+            self.employees.update(update)
+
+        # Input the general information
+        self.input_employees()
+    # ----------------------------------------------------------------------
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # ----------------------------------------------------------------------
@@ -315,6 +343,84 @@ class StochasticPro:
             days = int(round((365 * sample_ages[i])))
             birth = today - datetime.timedelta(days=days)
             self.users[user_id]['birthdate'] = birth.isoformat()
+    # ----------------------------------------------------------------------
+
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # Inputs the employees information
+    # ----------------------------------------------------------------------
+    def input_employees(self):
+        for k in self.employees_dict.keys():
+            if k == 'csz':
+                working = self.employees_dict[k]
+                working_n = len(working)
+                sample = np.random.choice(a=working_n,
+                                          size=self.employees_n)
+                for i in range(self.employees_n):
+                    self.employees[i]['country'] = 'US'
+                    self.employees[i]['city'] = working[sample[i]][0]
+                    self.employees[i]['state'] = working[sample[i]][1]
+                    self.employees[i]['zipcode'] = working[sample[i]][2]
+            elif k == 'hired_date':
+                loc = self.employees_dict[k][0]
+                scale = self.employees_dict[k][1]
+                sample_ages = np.random.normal(loc=loc,
+                                               scale=scale,
+                                               size=self.employees_n)
+                mask = sample_ages <= 0
+                sample_ages[mask] = np.abs(sample_ages[mask])
+                for i in range(self.employees_n):
+                    today = datetime.date(2019, 1, 1)
+                    days = int(round((365 * sample_ages[i])))
+                    hired = today - datetime.timedelta(days=days)
+                    self.employees[i]['hired_date'] = hired.isoformat()
+            else:
+                working = self.employees_dict[k]
+                working_n = len(working)
+                sample = np.random.choice(a=working_n,
+                                          size=self.employees_n)
+                for i in range(self.employees_n):
+                    self.employees[i][k] = working[sample[i]]
+    # ----------------------------------------------------------------------
+    
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # General employee lists
+    # ----------------------------------------------------------------------
+    def fill_in_employees(self):
+        self.employees_dict = {
+            'first_name': ['Jose Luis', 'Juan', 'Miguel', 'Jose',
+                           'Francisco', 'Antonio', 'Alejandro',
+                           'Pedro', 'Manuel', 'Ricardo', 'Daniel',
+                           'Maria', 'Juana', 'Margarita', 'Alejandra',
+                           'Leticia', 'Josefina'],
+            'last_name': ['Garcia', 'Rodriguez', 'Martinez',
+                          'Hernandez', 'Lopez', 'Gonzalez',
+                          'Perez'],
+            'address': ['170 W 96th ST', '145 E 39th ST', '207 12th Ave',
+                        '214 E 10th ST', '1433 Bedford Ave',
+                        '60 Grand ST', '181 E 111th ST',
+                        '81 E 45th ST', '65th 4th Ave',
+                        '99 Gansevoort ST', '529 Broome ST',
+                        '287 Hudson ST'],
+            'phone': ['212-866-8000', '212-865-5700', '212-989-6363',
+                      '212-777-7018', '347-305-3233', '718-285-6180',
+                      '212-828-3647', '646-747-0801', '212-388-0088',
+                      '212-570-3670', '917-639-3089', '646-666-5096'],
+            'hired_date': (3, 1),
+            'csz': [('Queens', 'NY', '11433'),
+                    ('Bronx', 'NY', '10701'),
+                    ('Bronx', 'NY', '10461'),
+                    ('Brooklyn', 'NY', '11216'),
+                    ('Stamford', 'CT', '06901'), ('NYC', 'NY', '10027'),
+                    ('Hoboken', 'NJ', '07030'),
+                    ('Jersey City', 'NJ', '07302'),
+                    ('Long Island', 'NY', '11101'),
+                    ('Staten Island', 'NY', '10306'),
+                    ('Brooklyn', 'NY', '11249'), ('NYC', 'NY', '10024'),
+                    ('NYC', 'NY', '10014'), ('NYC', 'NY', '10009'),
+                    ('Brooklyn', 'NY', '11201'), ('NYC', 'NY', '10014'),
+                    ('NYC', 'NY', '10012'), ('NYC', 'NY', '10013')]}
     # ----------------------------------------------------------------------
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
