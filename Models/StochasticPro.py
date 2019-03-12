@@ -73,8 +73,11 @@ class StochasticPro:
                                            p=p)
                 cluster = cluster + 1
                 user, dog = self.tell_user_dog(cluster=cluster[0])
+                employee = int(np.random.choice(a=self.employees_n,
+                                                size=1))
                 v['client_id'] = user
                 v['dog_id'] = dog
+                v['employee_id'] = employee
     # ----------------------------------------------------------------------
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -112,7 +115,7 @@ class StochasticPro:
     # ----------------------------------------------------------------------
     # Initialize the dictionary of rooms
     # ----------------------------------------------------------------------
-    def initialize_room_dict(self, limits=(9, 17), total=20):
+    def initialize_room_dict(self, limits=(9, 16), total=20):
         for i in range(total):
             if i <= limits[0]:
                 self.room_description.update({i: {'type': 1,
@@ -156,7 +159,8 @@ class StochasticPro:
                                 'duration': days,
                                 'used': used,
                                 'client_id': -1,
-                                'dog_id': -1}
+                                'dog_id': -1,
+                                'employee_id': -1}
                 process_list.append(process_dict)
                 start_date = end_date
 
