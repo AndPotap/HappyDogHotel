@@ -35,10 +35,7 @@ conn.create_all()
 
 ins = StochasticPro(total_users=total_users,
                     user_proportions=user_proportions)
-ins.initialize_room_dict()
 ins.add_reservation_periods()
-ins.fill_in_general()
-ins.fill_in_cluster()
 ins.generate_users()
 ins.determine_who_when()
 # ===========================================================================
@@ -46,6 +43,9 @@ ins.determine_who_when()
 # ===========================================================================
 # Insert into users
 # ===========================================================================
+for r in ins.room_description.keys():
+    conn.insert_into_rooms(room_dict=ins.room_description, room_id=r)
+
 for i in ins.users.keys():
     conn.insert_into_users(user_dict=ins.users, user_id=i)
     conn.insert_into_dogs(dog_dict=ins.dogs, dog_id=i)
