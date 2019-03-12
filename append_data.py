@@ -37,12 +37,16 @@ ins = StochasticPro(total_users=total_users,
                     user_proportions=user_proportions)
 ins.add_reservation_periods()
 ins.generate_users()
+ins.generate_employees()
 ins.determine_who_when()
 # ===========================================================================
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # ===========================================================================
-# Insert into users
+# Insert into tables
 # ===========================================================================
+for j in ins.employees.keys():
+    conn.insert_into_employees(employee_dict=ins.employees, employee_id=j)
+
 for r in ins.room_description.keys():
     conn.insert_into_rooms(room_dict=ins.room_description, room_id=r)
 
