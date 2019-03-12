@@ -210,6 +210,26 @@ class DBConnection:
         # Execute
         self.cursor.execute(insert)
     # ----------------------------------------------------------------------
+    
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # Insert into assigned
+    # ----------------------------------------------------------------------
+    def insert_into_assigned(self, room_dict, idx):
+        # Pass the values into strings
+        rubrics = ['date_from', 'date_to']
+
+        # Create the values
+        tup = self.generate_tuple(content=room_dict,
+                                  rubrics=rubrics,
+                                  idx=idx)
+
+        # Create the command
+        insert = "INSERT INTO assigned VALUES " + tup
+
+        # Execute
+        self.cursor.execute(insert)
+    # ----------------------------------------------------------------------
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # ----------------------------------------------------------------------
