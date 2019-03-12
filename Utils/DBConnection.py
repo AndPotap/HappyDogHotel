@@ -45,10 +45,21 @@ class DBConnection:
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # ----------------------------------------------------------------------
+    # Drop all the tables!
+    # ----------------------------------------------------------------------
+    def drop_all(self):
+        drops = ["assigned", "bookings", "employees",
+                 "rooms", "users", "dogs"]
+        for drop in drops:
+            query = "DROP TABLE IF EXISTS " + drop
+            self.cursor.execute(query=query)
+    # ----------------------------------------------------------------------
+
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
     # Create the booking table
     # ----------------------------------------------------------------------
     def create_booking_table(self):
-        drop = "DROP TABLE IF EXISTS booking"
         booking = """CREATE TABLE booking (
                         date_from date,
                         date_to date,
@@ -56,7 +67,6 @@ class DBConnection:
                         client_id int,
                         dog_id int,
                         PRIMARY KEY (date_from, date_to, room_id, dog_id))"""
-        self.cursor.execute(query=drop)
         self.cursor.execute(query=booking)
     # ----------------------------------------------------------------------
 
@@ -65,8 +75,6 @@ class DBConnection:
     # Create users and dogs tables
     # ----------------------------------------------------------------------
     def create_users_dogs_table(self):
-        drop_u = "DROP TABLE IF EXISTS users"
-        drop_d = "DROP TABLE IF EXISTS dogs"
         users = """CREATE TABLE users (
                         client_id int,
                         first_name text,
@@ -89,8 +97,6 @@ class DBConnection:
                             d_birthdate date,
                             brand text,
                             PRIMARY KEY (client_id, dog_id))"""
-        self.cursor.execute(query=drop_u)
-        self.cursor.execute(query=drop_d)
         self.cursor.execute(query=users)
         self.cursor.execute(query=dogs)
     # ----------------------------------------------------------------------
