@@ -26,6 +26,7 @@ user_proportions = np.array([0.4, 0.3, 0.2, 0.1])
 # Load the data
 # ===========================================================================
 # Initialize the connection to the database
+# conn = DBConnection(instance=True)  # do not forget to add password
 conn = DBConnection()
 conn.create_booking_table()
 conn.create_users_dogs_table()
