@@ -137,12 +137,14 @@ class DBConnection:
     def create_employees_table(self):
         employees = """CREATE TABLE employees (
                         employee_id int,
-                        e_name text,
-                        phone text,
+                        first_name text,
+                        last_name text,
                         address text,
                         city text,
                         state text,
                         zipcode text,
+                        country text,
+                        phone text,
                         hired_date date,
                         PRIMARY KEY (employee_id))"""
         self.cursor.execute(query=employees)
@@ -203,6 +205,28 @@ class DBConnection:
         tup = "(" + "'" + date_from + "'" + ', ' + "'" + date_to + "'" + \
               ', ' + room_id + ', ' + client_id + ', ' + dog_id + ")"
         insert = "INSERT INTO bookings VALUES " + tup
+
+        # Execute
+        self.cursor.execute(insert)
+    # ----------------------------------------------------------------------
+
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # Insert into employees
+    # ----------------------------------------------------------------------
+    def insert_into_employees(self, employee_dict, employee_id):
+        # Pass the values into strings
+        rubrics = ['first_name', 'last_name', 'address',
+                   'city', 'state', 'zipcode', 'country', 'phone',
+                   'hired_date']
+
+        # Create the values
+        tup = self.generate_tuple(content=employee_dict[employee_id],
+                                  rubrics=rubrics,
+                                  idx=[employee_id])
+
+        # Create the command
+        insert = "INSERT INTO employees VALUES " + tup
 
         # Execute
         self.cursor.execute(insert)
