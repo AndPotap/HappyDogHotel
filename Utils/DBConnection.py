@@ -80,6 +80,7 @@ class DBConnection:
                         city text,
                         state text,
                         zipcode text,
+                        country text,
                         phone text,
                         birthdate date,
                         PRIMARY KEY (client_id))"""
@@ -239,8 +240,8 @@ class DBConnection:
     def insert_into_users(self, user_dict, user_id):
         # Pass the values into strings
         rubrics = ['first_name', 'last_name', 'address',
-                   'city', 'state', 'zipcode', 'phone',
-                   'birthdate']
+                   'city', 'state', 'zipcode', 'country',
+                   'phone', 'birthdate']
 
         # Create the values
         tup = self.generate_tuple(content=user_dict[user_id],
