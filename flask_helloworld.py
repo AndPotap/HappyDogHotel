@@ -12,6 +12,10 @@
 from flask import Flask
 from flask import render_template
 from flask import url_for
+from flask import flash
+from flask import redirect
+from forms import RegistrationForm
+from forms import LoginForm
 # ===========================================================================
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # ===========================================================================
@@ -33,6 +37,7 @@ posts = [
 # Create the functionality
 # ===========================================================================
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'Bishop2891'
 
 
 @app.route('/')
@@ -43,7 +48,25 @@ def hello():
 
 @app.route('/about')
 def about():
-    return '<h1>About Page</h1>'
+    return render_template('about.html')
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        flash(f'Account created for {form.username.data}!',
+              'success')
+        return redirect(url_for('hello'))
+    return render_template(template_name_or_list='register.html',
+                           form=form)
+
+
+@app.route('/login')
+def login():
+    form = LoginForm()
+    return render_template(template_name_or_list='login.html',
+                           form=form)
 # ===========================================================================
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # ===========================================================================
