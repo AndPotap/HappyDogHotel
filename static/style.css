@@ -5,6 +5,12 @@ body {
     font-family: 'Roboto', sans-serif;
     color: #505962;
 }
+.offset:before {
+    height: 4rem;
+    margin-top: -4rem;
+    content: '';
+    display: block;
+}
 
 /*---- Navbar Style ----*/
 .navbar {
@@ -34,7 +40,33 @@ body {
 .carousel-item {
     height: 100vh;
 }
+.carousel-caption {
+    position: absolute;
+    top: 38%;
+    text-transform: uppercase;
+    width: 100%;
+    right: 0;
+    left: 0;
+}
+.carousel-caption h1 {
+    font-size: 3.8rem;
+    font-weight: 700;
+    letter-spacing: .3rem;
+    text-shadow: .1rem .1rem .8rem black;
+    padding-bottom: 1rem;
+}
+.carousel-caption h3 {
+    font-size: 2rem;
+    text-shadow: .1rem .1rem .5rem black;
+    padding-bottom: 1.6rem;
+}
 
+/*--- Button ---*/
+.btn-lg {
+    border-width: medium;
+    border-radius: 0;
+    font-size: 1.1rem;
+}
 /*================== COURSE SECTION =============*/
 
 .narrow {
@@ -49,3 +81,41 @@ body {
     text-transform: uppercase;
     margin: 1rem;
 }
+.jumbotron {
+    border-radius: 0;
+    padding: 3rem 0 2rem;
+    margin-bottom: 0;
+}
+h3.heading {
+    font-size: 1.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding-bottom: 1.9rem;
+}
+.heading-underline {
+    width: 3rem;
+    height: .2rem;
+    background-color: #1ebba3;
+    margin: 0 auto 2rem;
+}
+
+/*--- Booking Images ---*/
+.booking img {
+    max-width: 100%;
+    max-height: 100%;
+    transition: transform .5s ease;
+}
+.row.no-padding [class*=col-] {
+    padding: 0;
+}
+.booking img:hover {
+    transform: scale(1.1);
+    cursor: zoom-in;
+}
+.booking {
+    overflow: hidden;
+}
+.card {
+    margin: 2rem;
+}
+/*--- Booking Images ---*/
