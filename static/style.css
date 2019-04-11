@@ -39,6 +39,7 @@ body {
 
 .carousel-item {
     height: 100vh;
+    background-size: cover;
 }
 .carousel-caption {
     position: absolute;
@@ -80,6 +81,7 @@ body {
     padding: .6rem 1.1rem;
     text-transform: uppercase;
     margin: 1rem;
+    background-color: white;
 }
 .jumbotron {
     border-radius: 0;
@@ -90,6 +92,7 @@ h3.heading {
     font-size: 1.9rem;
     font-weight: 700;
     text-transform: uppercase;
+    padding-top: 1rem;
     padding-bottom: 1.9rem;
 }
 .heading-underline {
@@ -103,6 +106,8 @@ h3.heading {
 .booking img {
     max-width: 100%;
     max-height: 100%;
+    width: 500px;
+    height: 350px;
     transition: transform .5s ease;
 }
 .row.no-padding [class*=col-] {
@@ -118,4 +123,27 @@ h3.heading {
 .card {
     margin: 2rem;
 }
-/*--- Booking Images ---*/
+.room {
+    padding-top: 1rem;
+}
+/*--- Contact ---*/
+footer {
+    background-color: #40474e;
+    color: white;
+    padding: 2rem 0 3rem;
+    margin-top: 1rem;
+}
+footer a {
+    color: white;
+}
+footer svg.svg-inline--fa {
+    font-size: 3rem;
+    margin: 1.2rem .5rem 0;
+}
+footer svg.svg-inline--fa:hover {
+    color: #1ebba3;
+}
+hr.socket {
+    border-top: .2rem solid #666b71;
+    width: 100%;
+}
