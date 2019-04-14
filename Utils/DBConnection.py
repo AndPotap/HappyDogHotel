@@ -78,6 +78,7 @@ class DBConnection:
                         country text,
                         phone text,
                         birthdate date,
+                        password text,
                         PRIMARY KEY (client_id))"""
 
         dogs = """CREATE TABLE dogs (
@@ -213,21 +214,18 @@ class DBConnection:
         self.cursor.execute(insert)
 
     def insert_into_users(self, user_dict, user_id):
-        # Pass the values into strings
-        rubrics = ['first_name', 'last_name', 'address',
-                   'city', 'state', 'zipcode', 'country',
-                   'phone', 'birthdate']
+        user_dict[user_id].update({'client_id': user_id,
+                                   'password': '123'})
+        # TODO: pass the password creation to the stochastic class
 
-        # Create the values
-        tup = self.generate_tuple(content=user_dict[user_id],
-                                  rubrics=rubrics,
-                                  idx=[user_id])
-
-        # Create the command
-        insert = "INSERT INTO users VALUES " + tup
-
-        # Execute
-        self.cursor.execute(insert)
+        self.cursor.execute(
+            """
+            INSERT INTO users VALUES 
+            (%(client_id)s, %(first_name)s, %(last_name)s, %(address)s, 
+            %(city)s, %(state)s, %(zipcode)s, %(country)s, 
+            %(phone)s, %(birthdate)s, %(password)s);
+            """,
+            user_dict[user_id])
 
     def insert_into_dogs(self, dog_dict, dog_id):
         # Pass the values into strings
