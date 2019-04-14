@@ -57,7 +57,7 @@ class DBConnection:
     
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # ----------------------------------------------------------------------
-    # Create all the tables
+    # Create tables
     # ----------------------------------------------------------------------
     def create_all(self):
         self.create_users_dogs_table()
@@ -65,12 +65,7 @@ class DBConnection:
         self.create_bookings_table()
         self.create_employees_table()
         self.create_assigned_table()
-    # ----------------------------------------------------------------------
 
-    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    # ----------------------------------------------------------------------
-    # Create users and dogs tables
-    # ----------------------------------------------------------------------
     def create_users_dogs_table(self):
         users = """CREATE TABLE users (
                         client_id int,
@@ -97,12 +92,7 @@ class DBConnection:
                             PRIMARY KEY (client_id, dog_id))"""
         self.cursor.execute(query=users)
         self.cursor.execute(query=dogs)
-    # ----------------------------------------------------------------------
 
-    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    # ----------------------------------------------------------------------
-    # Create rooms table
-    # ----------------------------------------------------------------------
     def create_rooms_table(self):
         rooms = """CREATE TABLE rooms (
                         room_id int,
@@ -110,12 +100,7 @@ class DBConnection:
                         price float,
                         PRIMARY KEY (room_id))"""
         self.cursor.execute(query=rooms)
-    # ----------------------------------------------------------------------
 
-    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    # ----------------------------------------------------------------------
-    # Create the booking table
-    # ----------------------------------------------------------------------
     def create_bookings_table(self):
         bookings = """CREATE TABLE bookings (
                         date_from date,
@@ -129,12 +114,7 @@ class DBConnection:
                         PRIMARY KEY (date_from, date_to, room_id, dog_id)
                         )"""
         self.cursor.execute(query=bookings)
-    # ----------------------------------------------------------------------
 
-    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    # ----------------------------------------------------------------------
-    # Create employees table
-    # ----------------------------------------------------------------------
     def create_employees_table(self):
         employees = """CREATE TABLE employees (
                         employee_id int,
@@ -149,12 +129,7 @@ class DBConnection:
                         hired_date date,
                         PRIMARY KEY (employee_id))"""
         self.cursor.execute(query=employees)
-    # ----------------------------------------------------------------------
 
-    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    # ----------------------------------------------------------------------
-    # Create assigned table
-    # ----------------------------------------------------------------------
     def create_assigned_table(self):
         assigned = """CREATE TABLE assigned (
                         employee_id int,
@@ -171,7 +146,7 @@ class DBConnection:
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # ----------------------------------------------------------------------
-    # Insert into rooms
+    # Table insertions
     # ----------------------------------------------------------------------
     def insert_into_rooms(self, room_dict, room_id):
         # Pass the rubrics
@@ -188,12 +163,7 @@ class DBConnection:
 
         # Execute
         self.cursor.execute(insert)
-    # ----------------------------------------------------------------------
 
-    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    # ----------------------------------------------------------------------
-    # Insert into the booking table
-    # ----------------------------------------------------------------------
     def insert_into_booking(self, room_dict, room_id):
         # Pass the values into strings
         room_id = str(room_id)
@@ -209,12 +179,7 @@ class DBConnection:
 
         # Execute
         self.cursor.execute(insert)
-    # ----------------------------------------------------------------------
-    
-    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    # ----------------------------------------------------------------------
-    # Insert into assigned
-    # ----------------------------------------------------------------------
+
     def insert_into_assigned(self, room_dict, idx):
         # Pass the values into strings
         rubrics = ['date_from', 'date_to']
@@ -229,12 +194,7 @@ class DBConnection:
 
         # Execute
         self.cursor.execute(insert)
-    # ----------------------------------------------------------------------
 
-    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    # ----------------------------------------------------------------------
-    # Insert into employees
-    # ----------------------------------------------------------------------
     def insert_into_employees(self, employee_dict, employee_id):
         # Pass the values into strings
         rubrics = ['first_name', 'last_name', 'address',
@@ -251,12 +211,7 @@ class DBConnection:
 
         # Execute
         self.cursor.execute(insert)
-    # ----------------------------------------------------------------------
 
-    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    # ----------------------------------------------------------------------
-    # Insert into users
-    # ----------------------------------------------------------------------
     def insert_into_users(self, user_dict, user_id):
         # Pass the values into strings
         rubrics = ['first_name', 'last_name', 'address',
@@ -273,12 +228,7 @@ class DBConnection:
 
         # Execute
         self.cursor.execute(insert)
-    # ----------------------------------------------------------------------
 
-    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    # ----------------------------------------------------------------------
-    # Insert into dogs
-    # ----------------------------------------------------------------------
     def insert_into_dogs(self, dog_dict, dog_id):
         # Pass the values into strings
         rubrics = ['dog_name', 'breed', 'gender', 'color',
@@ -307,7 +257,7 @@ class DBConnection:
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # ----------------------------------------------------------------------
-    # Create insertion tuple
+    # Utils
     # ----------------------------------------------------------------------
     @staticmethod
     def generate_tuple(content, rubrics, idx, room=False):
