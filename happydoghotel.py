@@ -16,6 +16,7 @@ from forms import LoginForm
 from flask import redirect
 from flask import url_for
 from flask import flash
+from Utils.DBConnection import DBConnection
 # ===========================================================================
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # ===========================================================================
@@ -23,6 +24,7 @@ from flask import flash
 # ===========================================================================
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Bishop2891'
+conn = DBConnection()
 
 
 @app.route('/')
@@ -40,7 +42,8 @@ def contact():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        flash(f'Account created for {form.username.data}!',
+        conn.insert_into_users_from_form(form=form)
+        flash(f'Account created for {form.first_name.data}!',
               'success')
         return redirect(url_for('home'))
     return render_template(template_name_or_list='register.html',
