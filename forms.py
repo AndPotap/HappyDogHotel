@@ -58,6 +58,27 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('That first_name is already taken!')
 
 
+class DogRegistrationForm(FlaskForm):
+    # User credentials
+    email = StringField(label='Email', validators=[DataRequired(), Email()])
+
+    password = PasswordField(label='Password', validators=[DataRequired()])
+
+    dog_name = StringField(label='Dog Name',
+                           validators=[DataRequired(), Length(min=2, max=20)])
+    breed = StringField(label='Breed',
+                        validators=[DataRequired(), Length(min=2, max=20)])
+    gender = StringField(label='Gender',
+                         validators=[DataRequired(), Length(min=2, max=20)])
+    color = StringField(label='Color',
+                        validators=[DataRequired(), Length(min=2, max=20)])
+    birth_date = StringField(label='Birth Date',
+                             validators=[DataRequired(), Length(min=2, max=20)])
+    brand = StringField(label='Food Brand',
+                        validators=[DataRequired(), Length(min=2, max=20)])
+    submit = SubmitField(label='Sign Up')
+
+
 class LoginForm(FlaskForm):
     email = StringField(label='Email',
                         validators=[DataRequired(),
