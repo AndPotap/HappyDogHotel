@@ -167,20 +167,12 @@ class DBConnection:
         self.cursor.execute(insert)
 
     def insert_into_booking(self, room_dict, room_id):
-        # Pass the values into strings
-        room_id = str(room_id)
-        date_from = room_dict['date_from']
-        date_to = room_dict['date_to']
-        client_id = str(room_dict['client_id'])
-        dog_id = str(room_dict['dog_id'])
-
-        # Create the command
-        tup = "(" + "'" + date_from + "'" + ', ' + "'" + date_to + "'" + \
-              ', ' + room_id + ', ' + client_id + ', ' + dog_id + ")"
-        insert = "INSERT INTO bookings VALUES " + tup
-
-        # Execute
-        self.cursor.execute(insert)
+        room_dict.update({'room_id': room_id})
+        self.cursor.execute(
+            """
+            INSERT INTO bookings VALUES 
+            (%(date_from)s, %(date_to)s, %(room_id)s, %(client_id)s, %(dog_id)s)
+            """, room_dict)
 
     def insert_booking_from_form(self, form):
         date_from = form.date_from.data
@@ -357,7 +349,7 @@ class DBConnection:
             """
             SELECT room_id
             FROM rooms
-            WHERE room_id = %i
+            WHERE room_id = %s
             """, room_type)
         room_id = self.cursor.fetchone()[0]
         return room_id
