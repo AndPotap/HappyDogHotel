@@ -285,12 +285,12 @@ class DBConnection:
             WHERE users.email = %s AND users.password = %s
             """, (form.email.data, form.password.data))
         client_id = self.cursor.fetchone()[0]
-        dog_dict = {'dog_name': form.dog_name.data,
-                    'breed': form.breed.data,
-                    'gender': form.gender.data,
-                    'color': form.color.data,
+        dog_dict = {'dog_name': str(form.dog_name.data).capitalize(),
+                    'breed': str(form.breed.data).capitalize(),
+                    'gender': str(form.gender.data).capitalize(),
+                    'color': str(form.color.data).capitalize(),
                     'd_birthdate': form.birth_date.data,
-                    'brand': form.brand.data,
+                    'brand': str(form.brand.data).capitalize(),
                     'dog_id': dog_id,
                     'client_id': client_id}
         self.cursor.execute(
