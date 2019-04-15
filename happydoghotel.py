@@ -14,6 +14,7 @@ from flask import render_template
 from forms import RegistrationForm
 from forms import LoginForm
 from forms import DogRegistrationForm
+from forms import ReservationForm
 from flask import redirect
 from flask import url_for
 from flask import flash
@@ -25,7 +26,7 @@ from Utils.DBConnection import DBConnection
 # ===========================================================================
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Bishop2891'
-conn = DBConnection()
+db = DBConnection()
 # TODO: need to improve connection to DB (open and close)
 
 
@@ -44,20 +45,29 @@ def contact():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        conn.insert_into_users_from_form(form=form)
+        db.insert_into_users_from_form(form=form)
         flash(f'Account created for {form.first_name.data}!', 'success')
         return redirect(url_for('home'))
     return render_template(template_name_or_list='register.html', form=form)
 
 
-@app.route('/registerdog', methods=['GET', 'POST'])
+@app.route('/register/dog', methods=['GET', 'POST'])
 def register_dog():
     form = DogRegistrationForm()
     if form.validate_on_submit():
-        conn.insert_into_dogs_from_form(form=form)
+        db.insert_into_dogs_from_form(form=form)
         flash(f'Account created for {form.dog_name.data}!', 'success')
         return redirect(url_for('home'))
     return render_template(template_name_or_list='register_dog.html', form=form)
+
+
+@app.route('/reserve', methods=['GET', 'POST'])
+def reserve():
+    form = ReservationForm()
+    if form.validate_on_submit():
+        db.insert_into_bookings_from_form(form=form)
+        return redirect(url_for('home'))
+    return render_template(template_name_or_list='reserve.html', form=form)
 
 
 @app.route('/login')
