@@ -11,16 +11,18 @@ This script contains all the URLs for the Happy Dog Hotel Web app
 # ===========================================================================
 from flask import Flask
 from flask import render_template
-# from forms import RegistrationForm
-# from flask import redirect
-# from flask import url_for
-# from flask import flash
+from forms import RegistrationForm
+from forms import LoginForm
+from flask import redirect
+from flask import url_for
+from flask import flash
 # ===========================================================================
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # ===========================================================================
 # Create the associated URLs
 # ===========================================================================
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'Bishop2891'
 
 
 @app.route('/')
@@ -34,15 +36,22 @@ def contact():
     return render_template('about.html')
 
 
-# @app.route('/register', methods=['GET', 'POST'])
-# def register():
-#     form = RegistrationForm()
-#     if form.validate_on_submit():
-#         flash(f'Account created for {form.username.data}!',
-#               'success')
-#         return redirect(url_for('hello'))
-#     return render_template(template_name_or_list='register.html',
-#                            form=form)
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        flash(f'Account created for {form.username.data}!',
+              'success')
+        return redirect(url_for('home'))
+    return render_template(template_name_or_list='register.html',
+                           form=form)
+
+
+@app.route('/login')
+def login():
+    form = LoginForm()
+    return render_template(template_name_or_list='login.html',
+                           form=form)
 # ===========================================================================
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # ===========================================================================
