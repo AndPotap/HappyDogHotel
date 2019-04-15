@@ -69,11 +69,10 @@ class DogRegistrationForm(FlaskForm):
     breed = StringField(label='Breed',
                         validators=[DataRequired(), Length(min=2, max=20)])
     gender = StringField(label='Gender',
-                         validators=[DataRequired(), Length(min=2, max=20)])
+                         validators=[DataRequired(), Length(min=1, max=1)])
     color = StringField(label='Color',
                         validators=[DataRequired(), Length(min=2, max=20)])
-    birth_date = StringField(label='Birth Date',
-                             validators=[DataRequired(), Length(min=2, max=20)])
+    birth_date = DateField(label='Birth Date', validators=[DataRequired()])
     brand = StringField(label='Food Brand',
                         validators=[DataRequired(), Length(min=2, max=20)])
     submit = SubmitField(label='Dog Sign Up')
