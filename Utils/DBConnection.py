@@ -182,6 +182,29 @@ class DBConnection:
         # Execute
         self.cursor.execute(insert)
 
+    def insert_booking_from_form(self, form):
+        date_from = form.date_from.data
+        date_to = form.date_to.data
+        room_type = form.room_type.data
+        dog_name = form.dog_name.data
+        email = form.email.data
+        password = form.password.data
+        client_id = self.find_client_id_from_email_and_password(email=email,
+                                                                password=password)
+        dog_id = self.find_dog_id_by_name_and_owner(client_id=client_id,
+                                                    dog_name=dog_name)
+        room_id = self.allocate_room_based_on_type(room_type=room_type)
+        booking = {'date_from': date_from,
+                   'date_to': date_to,
+                   'room_id': room_id,
+                   'client_id': client_id,
+                   'dog_id': dog_id}
+        self.cursor.execute(
+            """
+            INSERT INTO bookings VALUES 
+            (%(date_from)s, %(date_to)s, %(room_id)s, %(client_id)s, %(dog_id)s)
+            """, booking)
+
     def insert_into_assigned(self, room_dict, idx):
         # Pass the values into strings
         rubrics = ['date_from', 'date_to']
@@ -308,6 +331,37 @@ class DBConnection:
     # ----------------------------------------------------------------------
     # Utils
     # ----------------------------------------------------------------------
+    def find_client_id_from_email_and_password(self, email: str, password: str):
+        self.cursor.execute(
+            """
+            SELECT client_id
+            FROM users
+            WHERE email = %s AND password = %s
+            """, (email, password))
+        client_id = self.cursor.fetchone()[0]
+        return client_id
+
+    def find_dog_id_by_name_and_owner(self, client_id: int, dog_name: str):
+        self.cursor.execute(
+            """
+            SELECT dog_id
+            FROM dogs
+            WHERE client_id = %s AND dog_name = %s
+            """, (client_id, dog_name))
+        dog_id = self.cursor.fetchone()[0]
+        return dog_id
+
+    def allocate_room_based_on_type(self, room_type: int):
+        # TODO: define the logic for allocating rooms
+        self.cursor.execute(
+            """
+            SELECT room_id
+            FROM rooms
+            WHERE room_id = %i
+            """, room_type)
+        room_id = self.cursor.fetchone()[0]
+        return room_id
+
     @staticmethod
     def generate_tuple(content, rubrics, idx, room=False):
         tup = "("
