@@ -64,6 +64,7 @@ class DogRegistrationForm(FlaskForm):
 
     password = PasswordField(label='Password', validators=[DataRequired()])
 
+    # Dog information
     dog_name = StringField(label='Dog Name',
                            validators=[DataRequired(), Length(min=2, max=20)])
     breed = StringField(label='Breed',
@@ -75,7 +76,30 @@ class DogRegistrationForm(FlaskForm):
     birth_date = DateField(label='Birth Date', validators=[DataRequired()])
     brand = StringField(label='Food Brand',
                         validators=[DataRequired(), Length(min=2, max=20)])
+    # Submit changes
     submit = SubmitField(label='Dog Sign Up')
+
+
+class ReservationForm(FlaskForm):
+    # User credentials
+    email = StringField(label='Email', validators=[DataRequired(), Email()])
+
+    password = PasswordField(label='Password', validators=[DataRequired()])
+
+    # Dog information
+    dog_name = StringField(label='Dog Name',
+                           validators=[DataRequired(), Length(min=2, max=20)])
+
+    # Dates information
+    date_from = DateField(label='From', validators=[DataRequired()])
+    date_to = DateField(label='To', validators=[DataRequired()])
+
+    # Room information
+    room_type = StringField(label='Room Type',
+                            validators=[DataRequired(), Length(min=2, max=20)])
+
+    # Submit changes
+    submit = SubmitField(label='Make Reservation')
 
 
 class LoginForm(FlaskForm):
