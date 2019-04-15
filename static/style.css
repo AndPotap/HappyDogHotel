@@ -12,6 +12,11 @@ body {
     display: block;
 }
 
+/*---- Myu own ideas ----*/
+.userinput {
+    padding-top: 4rem;
+}
+
 /*---- Navbar Style ----*/
 .navbar {
     text-transform: uppercase;
