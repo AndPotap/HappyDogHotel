@@ -211,7 +211,9 @@ class StochasticPro:
                           'zipcode': '',
                           'country': '',
                           'phone': '',
-                          'birthdate': ''}}
+                          'birthdate': '',
+                          'email': '',
+                          'password': ''}}
             update_2 = {i: {'dog_name': '',
                             'breed': '',
                             'gender': '',
@@ -337,6 +339,9 @@ class StochasticPro:
             self.users[user_id]['city'] = csz_i[0]
             self.users[user_id]['state'] = csz_i[1]
             self.users[user_id]['zipcode'] = csz_i[2]
+            name, lastname = self.users[user_id]['first_name'], self.users[user_id]['last_name']
+            self.users[user_id]['email'] = name.lower() + '.' + lastname.lower() + '@gmail.com'
+            self.users[user_id]['password'] = '123'
             self.dogs[dog_id]['breed'] = breeds[sample_breeds[i]]
             self.dogs[dog_id]['brand'] = brands[sample_brands[i]]
             today = datetime.date(2019, 1, 1)
