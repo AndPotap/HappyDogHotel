@@ -214,8 +214,11 @@ class DBConnection:
         self.cursor.execute(insert)
 
     def insert_into_users(self, user_dict, user_id):
-        user_dict[user_id].update({'client_id': user_id,
-                                   'password': '123'})
+        if 'password' not in user_dict[user_id].keys():
+            user_dict[user_id].update({'client_id': user_id,
+                                       'password': '123'})
+        else:
+            user_dict[user_id].update({'client_id': user_id})
         # TODO: pass the password creation to the stochastic class
 
         self.cursor.execute(
@@ -226,6 +229,32 @@ class DBConnection:
             %(phone)s, %(birthdate)s, %(password)s);
             """,
             user_dict[user_id])
+
+    def insert_into_users_from_form(self, form):
+        self.cursor.execute(
+            """
+            SELECT MAX(client_id)
+            FROM users
+        """)
+        client_id = self.cursor.fetchone()[0] + 1
+        user_dict = {'first_name': form.first_name.data,
+                     'last_name': form.last_name.data,
+                     'address': form.address.data,
+                     'city': form.city.data,
+                     'state': form.state.data,
+                     'zipcode': form.zipcode.data,
+                     'country': 'US',
+                     'phone': form.phone.data,
+                     'birthdate': form.birth_date.data,
+                     'password': form.password.data,
+                     'client_id': client_id}
+        self.cursor.execute(
+            """
+            INSERT INTO users VALUES 
+            (%(client_id)s, %(first_name)s, %(last_name)s, %(address)s, 
+            %(city)s, %(state)s, %(zipcode)s, %(country)s, 
+            %(phone)s, %(birthdate)s, %(password)s);
+            """, user_dict)
 
     def insert_into_dogs(self, dog_dict, dog_id):
         # Pass the values into strings
