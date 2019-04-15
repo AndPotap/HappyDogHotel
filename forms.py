@@ -76,7 +76,7 @@ class DogRegistrationForm(FlaskForm):
                              validators=[DataRequired(), Length(min=2, max=20)])
     brand = StringField(label='Food Brand',
                         validators=[DataRequired(), Length(min=2, max=20)])
-    submit = SubmitField(label='Sign Up')
+    submit = SubmitField(label='Dog Sign Up')
 
 
 class LoginForm(FlaskForm):
