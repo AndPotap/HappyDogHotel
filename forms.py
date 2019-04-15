@@ -19,7 +19,6 @@ from wtforms import IntegerField
 from wtforms.validators import DataRequired
 from wtforms.validators import Length
 from wtforms.validators import Email
-from wtforms.validators import EqualTo
 from wtforms.validators import ValidationError
 # ===========================================================================
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -41,8 +40,6 @@ class RegistrationForm(FlaskForm):
                         validators=[DataRequired(), Length(min=2, max=20)])
     zipcode = IntegerField(label='Zipcode', validators=[DataRequired()])
 
-    country = StringField(label='Country',
-                          validators=[DataRequired(), Length(min=2, max=20)])
     phone = StringField(label='Phone',
                         validators=[DataRequired(), Length(min=2, max=20)])
     birth_date = DateField(label='Birth Date', validators=[DataRequired()])
@@ -51,9 +48,6 @@ class RegistrationForm(FlaskForm):
 
     password = PasswordField(label='Password', validators=[DataRequired()])
 
-    confirm_password = PasswordField(label='Confirm Password',
-                                     validators=[DataRequired(),
-                                                 EqualTo('password')])
     submit = SubmitField(label='Sign Up')
 
     # noinspection PyMethodMayBeStatic
