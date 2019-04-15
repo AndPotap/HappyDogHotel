@@ -254,20 +254,13 @@ class DBConnection:
             """, user_dict)
 
     def insert_into_dogs(self, dog_dict, dog_id):
-        # Pass the values into strings
-        rubrics = ['dog_name', 'breed', 'gender', 'color',
-                   'd_birthdate', 'brand']
-
-        # Create the values
-        tup = self.generate_tuple(content=dog_dict[dog_id],
-                                  rubrics=rubrics,
-                                  idx=[dog_id, dog_id])
-
-        # Create the command
-        insert = "INSERT INTO dogs VALUES " + tup
-
-        # Execute
-        self.cursor.execute(insert)
+        dog_dict[dog_id].update({'dog_id': dog_id, 'client_id': dog_id})
+        self.cursor.execute(
+            """
+            INSERT INTO dogs VALUES 
+            (%(client_id)s, %(dog_id)s, %(dog_name)s, %(breed)s, 
+            %(gender)s, %(color)s, %(d_birthdate)s, %(brand)s);
+            """, dog_dict[dog_id])
 
     def insert_into_dogs_from_form(self, form):
         # Update the dog id
