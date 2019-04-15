@@ -1,23 +1,43 @@
 {% extends "layout.html" %}
 {% block content %}
     <div class="content-section">
-        <form method="POST" action="">
+        <form method="POST" action="">  <!--- Form Fields --->
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Join Today</legend>
                 <div class="form-group">
-                    {{ form.username.label(class="form-control-label") }}
+                    {{ form.first_name.label(class="form-control-label") }}
 
-                    {% if form.username.errors %}
-                        {{ form.username(class="form-control form-control-lg is-invalid") }}
+                    {% if form.first_name.errors %}
+                        {{ form.first_name(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
-                            {% for error in form.username.errors %}
+                            {% for error in form.first_name.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.username(class="form-control form-control-lg") }}
+                        {{ form.first_name(class="form-control form-control-lg") }}
                     {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.last_name.label(class="form-control-label") }}
+                    {{ form.last_name(class="form-control form-control-lg") }}
+                </div>
+                <div class="form-group">
+                    {{ form.address.label(class="form-control-label") }}
+                    {{ form.address(class="form-control form-control-lg") }}
+                </div>
+                <div class="form-group">
+                    {{ form.city.label(class="form-control-label") }}
+                    {{ form.city(class="form-control form-control-lg") }}
+                </div>
+                <div class="form-group">
+                    {{ form.state.label(class="form-control-label") }}
+                    {{ form.state(class="form-control form-control-lg") }}
+                </div>
+                <div class="form-group">
+                    {{ form.zipcode.label(class="form-control-label") }}
+                    {{ form.zipcode(class="form-control form-control-lg") }}
                 </div>
                 <div class="form-group">
                     {{ form.email.label(class="form-control-label") }}
@@ -35,14 +55,14 @@
             <div class="form-group">
                 {{ form.submit(class="btn btn-outline-info") }}
             </div>
-        </form>
+        </form> <!--- End of Form Fields --->
     </div>
+    <!--- Add the Final Properties --->
     <div class="border-top pt-3">
-        <small clas="text-muted">
+        <small class="text-muted">
             Already Have an Account? <a class="ml-2" href="{{ url_for('login') }}">
             Sign In
         </a>
         </small>
-
-    </div>
+    </div> <!--- End of Bottom Properties --->
 {% endblock content %}
