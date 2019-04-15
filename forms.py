@@ -14,6 +14,8 @@ from wtforms import StringField
 from wtforms import PasswordField
 from wtforms import SubmitField
 from wtforms import BooleanField
+from wtforms import DateField
+from wtforms import IntegerField
 from wtforms.validators import DataRequired
 from wtforms.validators import Length
 from wtforms.validators import Email
@@ -27,14 +29,28 @@ from wtforms.validators import ValidationError
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField(label='Username',
-                           validators=[DataRequired(),
-                                       Length(min=2, max=20)])
-    email = StringField(label='Email',
-                        validators=[DataRequired(),
-                                    Email()])
-    password = PasswordField(label='Password',
-                             validators=[DataRequired()])
+    first_name = StringField(label='First Name',
+                             validators=[DataRequired(), Length(min=2, max=20)])
+    last_name = StringField(label='Last Name',
+                            validators=[DataRequired(), Length(min=2, max=20)])
+    address = StringField(label='Address',
+                          validators=[DataRequired(), Length(min=2, max=20)])
+    city = StringField(label='City',
+                       validators=[DataRequired(), Length(min=2, max=20)])
+    state = StringField(label='State',
+                        validators=[DataRequired(), Length(min=2, max=20)])
+    zipcode = IntegerField(label='Zipcode', validators=[DataRequired()])
+
+    country = StringField(label='Country',
+                          validators=[DataRequired(), Length(min=2, max=20)])
+    phone = StringField(label='Phone',
+                        validators=[DataRequired(), Length(min=2, max=20)])
+    birth_date = DateField(label='Birth Date', validators=[DataRequired()])
+
+    email = StringField(label='Email', validators=[DataRequired(), Email()])
+
+    password = PasswordField(label='Password', validators=[DataRequired()])
+
     confirm_password = PasswordField(label='Confirm Password',
                                      validators=[DataRequired(),
                                                  EqualTo('password')])
@@ -45,7 +61,7 @@ class RegistrationForm(FlaskForm):
         user = True if username.data == 'aaa' else False
         # TODO: add actual SQL query for this
         if user:
-            raise ValidationError('That username is already taken!')
+            raise ValidationError('That first_name is already taken!')
 
 
 class LoginForm(FlaskForm):
