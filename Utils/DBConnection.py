@@ -78,6 +78,7 @@ class DBConnection:
                         country text,
                         phone text,
                         birthdate date,
+                        email text,
                         password text,
                         PRIMARY KEY (client_id))"""
 
@@ -214,19 +215,14 @@ class DBConnection:
         self.cursor.execute(insert)
 
     def insert_into_users(self, user_dict, user_id):
-        if 'password' not in user_dict[user_id].keys():
-            user_dict[user_id].update({'client_id': user_id,
-                                       'password': '123'})
-        else:
-            user_dict[user_id].update({'client_id': user_id})
-        # TODO: pass the password creation to the stochastic class
+        user_dict[user_id].update({'client_id': user_id})
 
         self.cursor.execute(
             """
             INSERT INTO users VALUES 
             (%(client_id)s, %(first_name)s, %(last_name)s, %(address)s, 
             %(city)s, %(state)s, %(zipcode)s, %(country)s, 
-            %(phone)s, %(birthdate)s, %(password)s);
+            %(phone)s, %(birthdate)s, %(email)s, %(password)s);
             """,
             user_dict[user_id])
 
@@ -271,6 +267,38 @@ class DBConnection:
 
         # Execute
         self.cursor.execute(insert)
+
+    def insert_into_dogs_from_form(self, form):
+        # Update the dog id
+        self.cursor.execute(
+            """
+            SELECT MAX(dog_id)
+            FROM dogs
+        """)
+        dog_id = self.cursor.fetchone()[0] + 1
+
+        # Find dog owner
+        self.cursor.execute(
+            """
+            SELECT client_id
+            FROM users
+            WHERE users.email = %s AND users.password = %s
+            """, (form.email.data, form.password.data))
+        client_id = self.cursor.fetchone()[0]
+        dog_dict = {'dog_name': form.dog_name.data,
+                    'breed': form.breed.data,
+                    'gender': form.gender.data,
+                    'color': form.color.data,
+                    'd_birthdate': form.birth_date.data,
+                    'brand': form.brand.data,
+                    'dog_id': dog_id,
+                    'client_id': client_id}
+        self.cursor.execute(
+            """
+            INSERT INTO dogs VALUES 
+            (%(client_id)s, %(dog_id)s, %(dog_name)s, %(breed)s, 
+            %(gender)s, %(color)s, %(d_birthdate)s, %(brand)s);
+            """, dog_dict)
     # ----------------------------------------------------------------------
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
