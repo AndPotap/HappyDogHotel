@@ -95,8 +95,7 @@ class ReservationForm(FlaskForm):
     date_to = DateField(label='To', validators=[DataRequired()])
 
     # Room information
-    room_type = StringField(label='Room Type',
-                            validators=[DataRequired(), Length(min=2, max=20)])
+    room_type = IntegerField(label='Room Type', validators=[DataRequired()])
 
     # Submit changes
     submit = SubmitField(label='Make Reservation')
