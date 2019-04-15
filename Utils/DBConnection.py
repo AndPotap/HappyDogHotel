@@ -242,6 +242,7 @@ class DBConnection:
                      'country': 'US',
                      'phone': form.phone.data,
                      'birthdate': form.birth_date.data,
+                     'email': form.email.data,
                      'password': form.password.data,
                      'client_id': client_id}
         self.cursor.execute(
