@@ -13,6 +13,7 @@ from flask import Flask
 from flask import render_template
 from forms import RegistrationForm
 from forms import LoginForm
+from forms import DogRegistrationForm
 from flask import redirect
 from flask import url_for
 from flask import flash
@@ -25,6 +26,7 @@ from Utils.DBConnection import DBConnection
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Bishop2891'
 conn = DBConnection()
+# TODO: need to improve connection to DB (open and close)
 
 
 @app.route('/')
@@ -43,18 +45,25 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         conn.insert_into_users_from_form(form=form)
-        flash(f'Account created for {form.first_name.data}!',
-              'success')
+        flash(f'Account created for {form.first_name.data}!', 'success')
         return redirect(url_for('home'))
-    return render_template(template_name_or_list='register.html',
-                           form=form)
+    return render_template(template_name_or_list='register.html', form=form)
+
+
+@app.route('/registerdog', methods=['GET', 'POST'])
+def register_dog():
+    form = DogRegistrationForm()
+    if form.validate_on_submit():
+        conn.insert_into_dogs_from_form(form=form)
+        flash(f'Account created for {form.dog_name.data}!', 'success')
+        return redirect(url_for('home'))
+    return render_template(template_name_or_list='register_dog.html', form=form)
 
 
 @app.route('/login')
 def login():
     form = LoginForm()
-    return render_template(template_name_or_list='login.html',
-                           form=form)
+    return render_template(template_name_or_list='login.html', form=form)
 # ===========================================================================
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # ===========================================================================
