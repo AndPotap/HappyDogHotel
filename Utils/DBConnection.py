@@ -334,6 +334,47 @@ class DBConnection:
             WHERE room_type = %s
             """, (room_new_price, room_type))
     # ----------------------------------------------------------------------
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    # ----------------------------------------------------------------------
+    # Compute Stats
+    # ----------------------------------------------------------------------
+
+    def compute_stats_for_sidebar(self):
+        self.cursor.execute(
+            """
+            SELECT COUNT(*)
+            FROM users
+            """)
+        users = self.cursor.fetchone()[0]
+
+        self.cursor.execute(
+            """
+            SELECT COUNT(*)
+            FROM dogs
+            """)
+        dogs = self.cursor.fetchone()[0]
+
+        self.cursor.execute(
+            """
+            SELECT COUNT(*)
+            FROM (SELECT breed
+                  FROM dogs
+                  GROUP BY breed) AS tmp;
+            """)
+        breeds = self.cursor.fetchone()[0]
+
+        self.cursor.execute(
+            """
+            SELECT AVG(tmp.age)
+            FROM (
+              SELECT DATE_PART('year', NOW()) - DATE_PART('year', d.d_birthdate) AS age
+              FROM dogs AS d
+            ) AS tmp;
+            """)
+        age = self.cursor.fetchone()[0]
+        stats = {'users': users, 'dogs': dogs, 'breeds': breeds, 'age': age}
+        return stats
+    # ----------------------------------------------------------------------
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # ----------------------------------------------------------------------
