@@ -71,8 +71,7 @@ for k in ins.room_process.keys():
             conn.insert_into_booking(room_dict=room_dict, room_id=k)
             dog_id = room_dict['dog_id']
             employee_id = room_dict['employee_id']
-            conn.insert_into_assigned(room_dict=room_dict,
-                                      idx=[employee_id, dog_id])
+            conn.insert_into_assigned(room_dict=room_dict)
 # ===========================================================================
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # ===========================================================================
