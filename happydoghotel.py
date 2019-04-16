@@ -14,6 +14,7 @@ from flask import render_template
 from forms import RegistrationForm
 from forms import LoginForm
 from forms import DogRegistrationForm
+from forms import EmployeeRegistrationForm
 from forms import ReservationForm
 from forms import RoomPriceForm
 from flask import redirect
@@ -75,6 +76,17 @@ def room_price():
             db.update_room_type_price_with_form(form=form)
             return redirect(url_for('home'))
     return render_template(template_name_or_list='room_price.html', form=form)
+
+
+@app.route('/register/employee', methods=['GET', 'POST'])
+def register_employee():
+    form = EmployeeRegistrationForm()
+    if form.validate_on_submit():
+        email, password = form.email.data, form.password.data
+        if email == 'ap3635@gmail.com' and password == 'ap3635':
+            db.insert_employee_from_form(form=form)
+            return redirect(url_for('home'))
+    return render_template(template_name_or_list='register_employee.html', form=form)
 
 
 @app.route('/login')
