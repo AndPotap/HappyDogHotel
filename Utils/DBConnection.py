@@ -151,20 +151,12 @@ class DBConnection:
     # Table insertions
     # ----------------------------------------------------------------------
     def insert_into_rooms(self, room_dict, room_id):
-        # Pass the rubrics
-        rubrics = ['type', 'price']
-
-        # Create the values
-        tup = self.generate_tuple(content=room_dict[room_id],
-                                  rubrics=rubrics,
-                                  idx=[room_id],
-                                  room=True)
-
-        # Create the command
-        insert = "INSERT INTO rooms VALUES " + tup
-
-        # Execute
-        self.cursor.execute(insert)
+        room_dict[room_id].update({'room_id': room_id})
+        self.cursor.execute(
+            """
+            INSERT INTO rooms VALUES
+            (%(room_id)s, %(type)s, %(price)s)
+            """, room_dict[room_id])
 
     def insert_into_booking(self, room_dict, room_id):
         room_dict.update({'room_id': room_id})
@@ -191,20 +183,12 @@ class DBConnection:
             (%(date_from)s, %(date_to)s, %(room_id)s, %(client_id)s, %(dog_id)s)
             """, booking)
 
-    def insert_into_assigned(self, room_dict, idx):
-        # Pass the values into strings
-        rubrics = ['date_from', 'date_to']
-
-        # Create the values
-        tup = self.generate_tuple(content=room_dict,
-                                  rubrics=rubrics,
-                                  idx=idx)
-
-        # Create the command
-        insert = "INSERT INTO assigned VALUES " + tup
-
-        # Execute
-        self.cursor.execute(insert)
+    def insert_into_assigned(self, room_dict):
+        self.cursor.execute(
+            """
+            INSERT INTO assigned VALUES
+            (%(employee_id)s, %(dog_id)s, %(date_from)s, %(date_to)s)
+            """, room_dict)
 
     def insert_into_employees(self, employee_dict, employee_id):
         employee_dict[employee_id].update({'employee_id': employee_id})
@@ -380,23 +364,5 @@ class DBConnection:
             """, (room_type,))
         room_id = self.cursor.fetchone()[0]
         return room_id
-
-    @staticmethod
-    def generate_tuple(content, rubrics, idx, room=False):
-        tup = "("
-        for i in range(len(idx)):
-            tup += str(idx[i]) + ', '
-
-        tup = tup[:-2]
-        for rub in rubrics:
-            a = content[rub]
-            if room:
-                a = str(a)
-            else:
-                a = "'" + a + "'"
-            tup += ', ' + a
-
-        tup += ")"
-        return tup
     # ----------------------------------------------------------------------
 # ===========================================================================
