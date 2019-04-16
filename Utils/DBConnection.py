@@ -172,27 +172,30 @@ class DBConnection:
                                                                 password=form.password.data)
         dog_id = self.find_dog_id_by_name_and_owner(client_id=client_id,
                                                     dog_name=form.dog_name.data)
-        room_id = self.allocate_room_based_on_type(room_type=form.room_type.data)
-        employee_id = self.allocate_to_employee()
-        booking = {'date_from': form.date_from.data,
-                   'date_to': form.date_to.data,
-                   'room_id': room_id,
-                   'client_id': client_id,
-                   'dog_id': dog_id}
-        assigned = {'date_from': form.date_from.data,
-                    'date_to': form.date_to.data,
-                    'employee_id': employee_id,
-                    'dog_id': dog_id}
-        self.cursor.execute(
-            """
-            INSERT INTO bookings VALUES 
-            (%(date_from)s, %(date_to)s, %(room_id)s, %(client_id)s, %(dog_id)s)
-            """, booking)
-        self.cursor.execute(
-            """
-            INSERT INTO assigned VALUES 
-            (%(employee_id)s, %(dog_id)s, %(date_from)s, %(date_to)s)
-            """, assigned)
+        room_id, found_room = self.allocate_room_based_on_type(room_type=form.room_type.data,
+                                                               date_from=str(form.date_from.data))
+        if found_room:
+            employee_id = self.allocate_to_employee()
+            booking = {'date_from': form.date_from.data,
+                       'date_to': form.date_to.data,
+                       'room_id': room_id,
+                       'client_id': client_id,
+                       'dog_id': dog_id}
+            assigned = {'date_from': form.date_from.data,
+                        'date_to': form.date_to.data,
+                        'employee_id': employee_id,
+                        'dog_id': dog_id}
+            self.cursor.execute(
+                """
+                INSERT INTO bookings VALUES 
+                (%(date_from)s, %(date_to)s, %(room_id)s, %(client_id)s, %(dog_id)s)
+                """, booking)
+            self.cursor.execute(
+                """
+                INSERT INTO assigned VALUES 
+                (%(employee_id)s, %(dog_id)s, %(date_from)s, %(date_to)s)
+                """, assigned)
+        return found_room
 
     def insert_into_assigned(self, room_dict):
         self.cursor.execute(
@@ -375,15 +378,27 @@ class DBConnection:
         sample_employee = np.random.choice(a=max_number, size=1)
         return int(sample_employee)
 
-    def allocate_room_based_on_type(self, room_type: int):
+    def allocate_room_based_on_type(self, room_type: int, date_from: str):
         # TODO: define the logic for allocating rooms
+        found_room = True
         self.cursor.execute(
             """
-            SELECT room_id
-            FROM rooms
+            WITH t AS (
+              SELECT b.date_from, b.date_to, b.room_id, r.room_type
+              FROM bookings AS b, rooms AS r
+              WHERE r.room_id = b.room_id
+            )
+            SELECT DISTINCT room_id
+            FROM t
             WHERE room_type = %s
-            """, (room_type,))
-        room_id = self.cursor.fetchone()[0]
-        return room_id
+            GROUP BY room_id
+            HAVING MAX(date_to) < %s::date
+            """, (room_type, date_from))
+        room_id = self.cursor.fetchone()
+        if len(room_id) > 0:
+            room_id = room_id[0]
+        else:
+            found_room = False
+        return room_id, found_room
     # ----------------------------------------------------------------------
 # ===========================================================================
