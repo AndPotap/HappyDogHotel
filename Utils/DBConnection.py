@@ -395,10 +395,10 @@ class DBConnection:
             HAVING MAX(date_to) < %s::date
             """, (room_type, date_from))
         room_id = self.cursor.fetchone()
-        if len(room_id) > 0:
-            room_id = room_id[0]
-        else:
+        if room_id is None:
             found_room = False
+        else:
+            room_id = room_id[0]
         return room_id, found_room
     # ----------------------------------------------------------------------
 # ===========================================================================
