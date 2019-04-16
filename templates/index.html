@@ -20,7 +20,7 @@
 
 <!--- Navigation --->
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" href="index.html"><i class="fas fa-dog"></i></a>
+    <a class="navbar-brand" href="{{ url_for('home') }}"><i class="fas fa-dog"></i></a>
 <!--    <a class="navbar-brand" href="index.html"><img src="../static/icon.png"></a>-->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
         <span class="navbar-toggler-icon"></span>
@@ -32,10 +32,10 @@
                 <a class="nav-link" href="#home">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#book">Book Now</a>
+                <a class="nav-link" href="#book">Reserve Now</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#login">Log In / Sign Up</a>
+                <a class="nav-link" href="#login">Sign Up / Dog Sign Up</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#team">Meet Team</a>
@@ -60,14 +60,14 @@
         <div class="carousel-item active" style="background-image: url(../static/dog-hotel-article.jpg);">
             <div class="carousel-caption text-center">
                 <h1>Welcome To The Happy Dog Hotel</h1>
-                <h3>Where Dogs Meet</h3>
-                <a class="btn btn-outline-light btn-lg">Reserve Now</a>
+                <h3>Where Dogs Relax</h3>
+                <a class="btn btn-outline-light btn-lg" href="{{ url_for('reserve') }}">Reserve Now</a>
             </div>
         </div>
 <!--    Slide 2-->
-        <div class="carousel-item" style="background-image: url(../static/dog2.jpg);"></div>
+        <div class="carousel-item" style="background-image: url(../static/dog2.jpeg);"></div>
 <!--    Slide 3-->
-        <div class="carousel-item" style="background-image: url(../static/cane.jpg);"></div>
+        <div class="carousel-item" style="background-image: url(../static/cane.jpeg);"></div>
 <!--    Prev & Next Buttons    -->
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -88,7 +88,7 @@
 <div class="jumbotron container-fluid">
 
     <div class="col-12 text-center">
-        <h3 class="heading">Book Now</h3>
+        <h3 class="heading">Reserve Now</h3>
         <div class="heading-underline"></div>
     </div>
 
@@ -101,7 +101,7 @@
             </a>
         </div>
         <p class="room text-center">
-            Our cheapest.
+            Afforadable.
         </p>
     </div>
 
@@ -123,14 +123,14 @@
             </a>
         </div>
         <p class="room text-center">
-            Our most exclusive.
+            Exclusive.
         </p>
     </div>
 
     <div class="narrow text-center">
         <div class="col-12">
-            <p class="lead">Not a Member?</p>
-            <a class="btn btn-secondary btn-md">Sign Up</a>
+            <p class="lead">Ready to make a reservation?</p>
+            <a class="btn btn-secondary btn-md" href="{{ url_for('reserve') }}">Reserve Now</a>
         </div>
     </div>
 
@@ -145,10 +145,17 @@
 <!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!---->
 
     <div class="col-12 text-center">
-        <h3 class="heading">Log In</h3>
+        <h3 class="heading">Sign Up / Sign Up Dog</h3>
         <div class="heading-underline"></div>
-        <p class="text-center">We missed you! Click below to log back in.</p>
-    <a class="btn btn-secondary btn-md">Log In</a>
+        <p class="text-center">Hey! Sign yourself as a user and then your dogs.</p>
+        <div class="row">
+            <div class="col-md-6">
+                <a class="btn btn-secondary btn-md" href="{{ url_for('register') }}">Sign Up</a>
+            </div>
+            <div class="col-md-6">
+                <a class="btn btn-secondary btn-md" href="{{ url_for('register_dog') }}">Sign Up Dog</a>
+            </div>
+        </div>
     </div>
 
 
@@ -181,10 +188,10 @@
     <!--- Card 2 --->
     <div class="col-md-6">
         <div class="card text-center">
-            <img class="card-img-top" src="../static/person1.jpg">
+            <img class="card-img-top" src="../static/lupillo.jpeg">
             <div class="card-body">
-                <h4>Lu Xiayoun</h4>
-                <p>I love 'em dogs</p>
+                <h4>Lupillo</h4>
+                <p>I like treats!</p>
             </div>
         </div>
     </div> <!--- End of Card 2 --->
