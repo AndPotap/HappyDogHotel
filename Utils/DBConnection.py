@@ -349,8 +349,8 @@ class DBConnection:
             """
             SELECT room_id
             FROM rooms
-            WHERE room_id = %s
-            """, room_type)
+            WHERE room_type = %s
+            """, (room_type,))
         room_id = self.cursor.fetchone()[0]
         return room_id
 
