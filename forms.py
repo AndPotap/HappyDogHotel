@@ -78,7 +78,7 @@ class DogRegistrationForm(FlaskForm):
     brand = StringField(label='Food Brand',
                         validators=[DataRequired(), Length(min=2, max=20)])
     # Submit changes
-    submit = SubmitField(label='Dog Sign Up')
+    submit = SubmitField(label='Sign Up Dog')
 
 
 class ReservationForm(FlaskForm):
@@ -115,6 +115,31 @@ class RoomPriceForm(FlaskForm):
 
     # Submit changes
     submit = SubmitField(label='Submit Price Changes')
+
+
+class EmployeeRegistrationForm(FlaskForm):
+    first_name = StringField(label='First Name',
+                             validators=[DataRequired(), Length(min=2, max=20)])
+    last_name = StringField(label='Last Name',
+                            validators=[DataRequired(), Length(min=2, max=20)])
+    address = StringField(label='Address',
+                          validators=[DataRequired(), Length(min=2, max=20)])
+    city = StringField(label='City',
+                       validators=[DataRequired(), Length(min=2, max=20)])
+    state = StringField(label='State',
+                        validators=[DataRequired(), Length(min=2, max=20)])
+    zipcode = IntegerField(label='Zipcode', validators=[DataRequired()])
+
+    phone = StringField(label='Phone',
+                        validators=[DataRequired(), Length(min=2, max=20)])
+    hired_date = DateField(label='Hired Date', validators=[DataRequired()])
+
+    # Manager Credentials
+    email = StringField(label='Manager Email', validators=[DataRequired(), Email()])
+
+    password = PasswordField(label='Manager Password', validators=[DataRequired()])
+
+    submit = SubmitField(label='Sign Up Employee')
 
 
 class LoginForm(FlaskForm):
