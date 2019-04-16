@@ -11,6 +11,7 @@
 # ===========================================================================
 from flask_wtf import FlaskForm
 from wtforms import StringField
+from wtforms import FloatField
 from wtforms import PasswordField
 from wtforms import SubmitField
 from wtforms import BooleanField
@@ -95,6 +96,16 @@ class ReservationForm(FlaskForm):
     date_to = DateField(label='To', validators=[DataRequired()])
 
     # Room information
+    room_type = IntegerField(label='Room Type', validators=[DataRequired()])
+
+    # Submit changes
+    submit = SubmitField(label='Make Reservation')
+
+
+class RoomPriceForm(FlaskForm):
+    # Room information
+    room_price = FloatField(label='New Price', validators=[DataRequired()])
+
     room_type = IntegerField(label='Room Type', validators=[DataRequired()])
 
     # Submit changes
