@@ -79,7 +79,7 @@ class DBConnection:
                         country text,
                         phone text,
                         birthdate date,
-                        email text,
+                        email text UNIQUE,
                         password text,
                         PRIMARY KEY (client_id))"""
 
