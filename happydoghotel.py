@@ -28,7 +28,14 @@ from Utils.DBConnection import DBConnection
 # ===========================================================================
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Intro2DBap3635'
-db = DBConnection()
+# When running on VM
+run_on_instance = input('Run on instance?')
+if run_on_instance == 'yes':
+    password = input('Provide Password')
+    instance = True
+    db = DBConnection(instance=instance, password=password)
+else:
+    db = DBConnection()
 # TODO: need to improve connection to DB (open and close)
 
 
