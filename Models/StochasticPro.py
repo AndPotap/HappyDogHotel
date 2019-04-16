@@ -340,7 +340,8 @@ class StochasticPro:
             self.users[user_id]['state'] = csz_i[1]
             self.users[user_id]['zipcode'] = csz_i[2]
             name, lastname = self.users[user_id]['first_name'], self.users[user_id]['last_name']
-            self.users[user_id]['email'] = name.lower() + '.' + lastname.lower() + '@gmail.com'
+            email = name.lower() + '.' + lastname.lower() + str(i) + '@gmail.com'
+            self.users[user_id]['email'] = email
             self.users[user_id]['password'] = '123'
             self.dogs[dog_id]['breed'] = breeds[sample_breeds[i]]
             self.dogs[dog_id]['brand'] = brands[sample_brands[i]]
