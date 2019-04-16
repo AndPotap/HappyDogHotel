@@ -70,8 +70,12 @@ def register_dog():
 def reserve():
     form = ReservationForm()
     if form.validate_on_submit():
-        db.insert_booking_from_form(form=form)
-        return redirect(url_for('home'))
+        found_room = db.insert_booking_from_form(form=form)
+        if found_room:
+            return redirect(url_for('home'))
+        else:
+            flash('No room for that period! Please check other room type or'
+                  'dates', 'error')
     return render_template(template_name_or_list='reserve.html', form=form)
 
 
