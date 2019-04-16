@@ -6,12 +6,12 @@
 
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    {{ form.dog_name.label(class="form-control-label")}}
-                    {{ form.dog_name(class="form-control", placeholder="Lola")}}
-                </div>
-                <div class="form-group col-md-6">
                     {{ form.date_from.label(class="form-control-label")}}
                     {{ form.date_from(class="form-control", placeholder="2019-04-01")}}
+                </div>
+                <div class="form-group col-md-6">
+                    {{ form.date_to.label(class="form-control-label")}}
+                    {{ form.date_to(class="form-control", placeholder="2019-04-07")}}
                 </div>
             </div> <!--- End row --->
 
@@ -22,7 +22,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     {{ form.room_type.label(class="form-control-label")}}
-                    {{ form.room_type(class="form-control", placeholder="Lola")}}
+                    {{ form.room_type(class="form-control", placeholder="1 / 2 / 3")}}
                 </div>
             </div> <!--- End row --->
 
