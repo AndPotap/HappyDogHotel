@@ -175,19 +175,13 @@ class DBConnection:
             """, room_dict)
 
     def insert_booking_from_form(self, form):
-        date_from = form.date_from.data
-        date_to = form.date_to.data
-        room_type = form.room_type.data
-        dog_name = form.dog_name.data
-        email = form.email.data
-        password = form.password.data
-        client_id = self.find_client_id_from_email_and_password(email=email,
-                                                                password=password)
+        client_id = self.find_client_id_from_email_and_password(email=form.email.data,
+                                                                password=form.password.data)
         dog_id = self.find_dog_id_by_name_and_owner(client_id=client_id,
-                                                    dog_name=dog_name)
-        room_id = self.allocate_room_based_on_type(room_type=room_type)
-        booking = {'date_from': date_from,
-                   'date_to': date_to,
+                                                    dog_name=form.dog_name.data)
+        room_id = self.allocate_room_based_on_type(room_type=form.room_type.data)
+        booking = {'date_from': form.date_from.data,
+                   'date_to': form.date_to.data,
                    'room_id': room_id,
                    'client_id': client_id,
                    'dog_id': dog_id}
