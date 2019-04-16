@@ -213,21 +213,39 @@ class DBConnection:
         self.cursor.execute(insert)
 
     def insert_into_employees(self, employee_dict, employee_id):
-        # Pass the values into strings
-        rubrics = ['first_name', 'last_name', 'address',
-                   'city', 'state', 'zipcode', 'country', 'phone',
-                   'hired_date']
+        employee_dict[employee_id].update({'employee_id': employee_id})
+        self.cursor.execute(
+            """
+            INSERT INTO employees VALUES 
+            (%(employee_id)s, %(first_name)s, %(last_name)s, %(address)s, 
+            %(city)s, %(state)s, %(zipcode)s, %(country)s, 
+            %(phone)s, %(hired_date)s)
+            """, employee_dict[employee_id])
 
-        # Create the values
-        tup = self.generate_tuple(content=employee_dict[employee_id],
-                                  rubrics=rubrics,
-                                  idx=[employee_id])
-
-        # Create the command
-        insert = "INSERT INTO employees VALUES " + tup
-
-        # Execute
-        self.cursor.execute(insert)
+    def insert_employee_from_form(self, form):
+        self.cursor.execute(
+            """
+            SELECT MAX(employee_id)
+            FROM employees
+        """)
+        employee_id = self.cursor.fetchone()[0] + 1
+        employee_dict = {'first_name': form.first_name.data,
+                         'last_name': form.last_name.data,
+                         'address': form.address.data,
+                         'city': form.city.data,
+                         'state': form.state.data,
+                         'zipcode': form.zipcode.data,
+                         'country': 'US',
+                         'phone': form.phone.data,
+                         'hired_date': form.birth_date.data,
+                         'employee_id': employee_id}
+        self.cursor.execute(
+            """
+            INSERT INTO employees VALUES 
+            (%(employee_id)s, %(first_name)s, %(last_name)s, %(address)s, 
+            %(city)s, %(state)s, %(zipcode)s, %(country)s, 
+            %(phone)s, %(hired_date))
+            """, employee_dict)
 
     def insert_into_users(self, user_dict, user_id):
         user_dict[user_id].update({'client_id': user_id})
@@ -265,7 +283,7 @@ class DBConnection:
             INSERT INTO users VALUES 
             (%(client_id)s, %(first_name)s, %(last_name)s, %(address)s, 
             %(city)s, %(state)s, %(zipcode)s, %(country)s, 
-            %(phone)s, %(birthdate)s, %(password)s);
+            %(phone)s, %(birthdate)s, %(email)s, %(password)s);
             """, user_dict)
 
     def insert_into_dogs(self, dog_dict, dog_id):
