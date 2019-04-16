@@ -10,6 +10,7 @@
 # Imports
 # ===========================================================================
 import psycopg2
+import numpy as np
 # ===========================================================================
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # ===========================================================================
@@ -172,7 +173,7 @@ class DBConnection:
         dog_id = self.find_dog_id_by_name_and_owner(client_id=client_id,
                                                     dog_name=form.dog_name.data)
         room_id = self.allocate_room_based_on_type(room_type=form.room_type.data)
-        employee_id = 0
+        employee_id = self.allocate_to_employee()
         booking = {'date_from': form.date_from.data,
                    'date_to': form.date_to.data,
                    'room_id': room_id,
@@ -363,6 +364,16 @@ class DBConnection:
             """, (client_id, dog_name))
         dog_id = self.cursor.fetchone()[0]
         return dog_id
+
+    def allocate_to_employee(self) -> int:
+        self.cursor.execute(
+            """
+            SELECT MAX(employee_id)
+            FROM employees
+            """)
+        max_number = self.cursor.fetchone()[0]
+        sample_employee = np.random.choice(a=max_number, size=1)
+        return int(sample_employee)
 
     def allocate_room_based_on_type(self, room_type: int):
         # TODO: define the logic for allocating rooms
