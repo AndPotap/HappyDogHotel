@@ -19,6 +19,7 @@ from forms import RoomPriceForm
 from flask import redirect
 from flask import url_for
 from flask import flash
+import os
 from Utils.DBConnection import DBConnection
 # ===========================================================================
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -113,7 +114,10 @@ def login():
 
 if __name__ == '__main__':
     if instance:
-        app.run(debug=False)
+        # app.run()
+        app.run(host=os.getenv('IP', '0.0.0.0'),
+                port=int(os.getenv('PORT', 8111)),
+                debug=True)
     else:
         app.run(debug=True)
 # ===========================================================================
