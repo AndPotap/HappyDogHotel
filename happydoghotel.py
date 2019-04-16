@@ -31,10 +31,11 @@ app.config['SECRET_KEY'] = 'Intro2DBap3635'
 # When running on VM
 run_on_instance = input('Run on instance?')
 if run_on_instance == 'yes':
-    password = input('Provide Password')
+    password_db = input('Provide Password')
     instance = True
-    db = DBConnection(instance=instance, password=password)
+    db = DBConnection(instance=instance, password=password_db)
 else:
+    instance = False
     db = DBConnection()
 # TODO: need to improve connection to DB (open and close)
 
@@ -108,5 +109,8 @@ def login():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    if instance:
+        app.run(debug=False)
+    else:
+        app.run(debug=True)
 # ===========================================================================
