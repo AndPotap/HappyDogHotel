@@ -65,7 +65,7 @@ def register_dog():
 def reserve():
     form = ReservationForm()
     if form.validate_on_submit():
-        db.insert_into_bookings_from_form(form=form)
+        db.insert_booking_from_form(form=form)
         return redirect(url_for('home'))
     return render_template(template_name_or_list='reserve.html', form=form)
 
