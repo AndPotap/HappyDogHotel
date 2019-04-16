@@ -15,6 +15,7 @@ from forms import RegistrationForm
 from forms import LoginForm
 from forms import DogRegistrationForm
 from forms import ReservationForm
+from forms import RoomPriceForm
 from flask import redirect
 from flask import url_for
 from flask import flash
@@ -25,7 +26,7 @@ from Utils.DBConnection import DBConnection
 # Create the associated URLs
 # ===========================================================================
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'Bishop2891'
+app.config['SECRET_KEY'] = 'Intro2DBap3635'
 db = DBConnection()
 # TODO: need to improve connection to DB (open and close)
 
@@ -68,6 +69,17 @@ def reserve():
         db.insert_booking_from_form(form=form)
         return redirect(url_for('home'))
     return render_template(template_name_or_list='reserve.html', form=form)
+
+
+@app.route('/room/price', methods=['GET', 'POST'])
+def room_price():
+    form = RoomPriceForm()
+    if form.validate_on_submit():
+        email, password = form.email.data, form.password.data
+        if email == 'ap3635@gmail.com' and password == 'ap3635':
+            db.update_room_type_price_with_form(form=form)
+            return redirect(url_for('home'))
+    return render_template(template_name_or_list='room_price.html', form=form)
 
 
 @app.route('/login')
