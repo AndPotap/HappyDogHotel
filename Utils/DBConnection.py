@@ -231,14 +231,14 @@ class DBConnection:
                          'zipcode': form.zipcode.data,
                          'country': 'US',
                          'phone': form.phone.data,
-                         'hired_date': form.birth_date.data,
+                         'hired_date': form.hired_date.data,
                          'employee_id': employee_id}
         self.cursor.execute(
             """
             INSERT INTO employees VALUES 
             (%(employee_id)s, %(first_name)s, %(last_name)s, %(address)s, 
             %(city)s, %(state)s, %(zipcode)s, %(country)s, 
-            %(phone)s, %(hired_date))
+            %(phone)s, %(hired_date)s)
             """, employee_dict)
 
     def insert_into_users(self, user_dict, user_id):
