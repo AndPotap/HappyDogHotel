@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+{% block content %} <!--- Start of block content --->
+    <div class="content-section">
+        <form method="POST" action="">  <!--- Form Fields --->
+            {{ form.hidden_tag() }}
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    {{ form.email.label(class="form-control-label")}}
+                    {{ form.email(class="form-control", placeholder="happydog@gmail.com")}}
+                </div>
+                <div class="form-group col-md-6">
+                    {{ form.password.label(class="form-control-label")}}
+                    {{ form.password(class="form-control", placeholder="Password")}}
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    {{ form.first_name.label(class="form-control-label")}}
+                    {{ form.first_name(class="form-control", placeholder="Juan")}}
+                </div>
+                <div class="form-group col-md-6">
+                    {{ form.last_name.label(class="form-control-label")}}
+                    {{ form.last_name(class="form-control", placeholder="Perez")}}
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    {{ form.hired_date.label(class="form-control-label")}}
+                    {{ form.hired_date(class="form-control", placeholder="2000-01-01")}}
+                </div>
+                <div class="form-group col-md-6">
+                    {{ form.phone.label(class="form-control-label")}}
+                    {{ form.phone(class="form-control", placeholder="888-888-8888")}}
+                </div>
+            </div>
+
+          <div class="form-group">
+              {{ form.address.label(class="form-control-label")}}
+              {{ form.address(class="form-control", placeholder="1234 Main ST, Apt 1M")}}
+          </div>
+
+            <div class="form-row"> <!--- Location Row --->
+                <div class="form-group col-md-6">
+                    {{ form.city.label(class="form-control-label")}}
+                    {{ form.city(class="form-control")}}
+                </div>
+                <div class="form-group col-md-4">
+                    {{ form.state.label(class="form-control-label")}}
+                    {{ form.state(class="form-control")}}
+                </div>
+                <div class="form-group col-md-2">
+                    {{ form.zipcode.label(class="form-control-label")}}
+                    {{ form.zipcode(class="form-control")}}
+                </div>
+          </div> <!--- End of Location Row --->
+
+          <div class="from-group">
+              {{ form.submit(class="btn btn-outline-info") }}
+          </div>
+
+        </form> <!--- End of Form Fields --->
+    </div>
+    <!--- Add the Final Properties --->
+    <br>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            Already Have an Account? <a class="ml-2" href="{{ url_for('login') }}">
+            Sign In
+        </a>
+        </small>
+    </div> <!--- End of Bottom Properties --->
+{% endblock content %} <!--- End of Block Content --->
