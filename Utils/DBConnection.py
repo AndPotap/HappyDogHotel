@@ -172,16 +172,26 @@ class DBConnection:
         dog_id = self.find_dog_id_by_name_and_owner(client_id=client_id,
                                                     dog_name=form.dog_name.data)
         room_id = self.allocate_room_based_on_type(room_type=form.room_type.data)
+        employee_id = 0
         booking = {'date_from': form.date_from.data,
                    'date_to': form.date_to.data,
                    'room_id': room_id,
                    'client_id': client_id,
                    'dog_id': dog_id}
+        assigned = {'date_from': form.date_from.data,
+                    'date_to': form.date_to.data,
+                    'employee_id': employee_id,
+                    'dog_id': dog_id}
         self.cursor.execute(
             """
             INSERT INTO bookings VALUES 
             (%(date_from)s, %(date_to)s, %(room_id)s, %(client_id)s, %(dog_id)s)
             """, booking)
+        self.cursor.execute(
+            """
+            INSERT INTO assigned VALUES 
+            (%(employee_id)s, %(dog_id)s, %(date_from)s, %(date_to)s)
+            """, assigned)
 
     def insert_into_assigned(self, room_dict):
         self.cursor.execute(
