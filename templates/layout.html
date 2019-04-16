@@ -26,7 +26,7 @@
     <!--- Navigation --->
 <header class="site-header">
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <a class="navbar-brand" href="index.html"><i class="fas fa-dog"></i></a>
+        <a class="navbar-brand" href="{{ url_for('home') }}"><i class="fas fa-dog"></i></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -34,19 +34,19 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="{{ url_for('reserve') }}">Book Now</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Book Now</a>
+                    <a class="nav-link" href="{{ url_for('register') }}">Sign Up</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Log In / Sign Up</a>
+                    <a class="nav-link" href="{{ url_for('register_dog') }}">Dog Sign Up</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Meet Team</a>
+                    <a class="nav-link" href="{{ url_for('register_employee') }}">Sign Up Employee</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contact Us</a>
+                    <a class="nav-link" href="{{ url_for('room_price') }}">Change Room Price</a>
                 </li>
             </ul>
         </div>
