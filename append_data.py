@@ -26,8 +26,14 @@ user_proportions = np.array([0.4, 0.3, 0.2, 0.1])
 # Load the data
 # ===========================================================================
 # Initialize the connection to the database
-# conn = DBConnection(instance=True)  # do not forget to add password
-conn = DBConnection()
+run_on_instance = input('Run on instance?')
+if run_on_instance == 'yes':
+    password_db = input('Provide Password')
+    instance = True
+    conn = DBConnection(instance=instance, password=password_db)
+else:
+    instance = False
+    conn = DBConnection()
 conn.drop_all()
 conn.create_all()
 
