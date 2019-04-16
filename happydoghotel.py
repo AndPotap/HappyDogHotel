@@ -47,12 +47,13 @@ def home():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    stats = db.compute_stats_for_sidebar()
     form = RegistrationForm()
     if form.validate_on_submit():
         db.insert_into_users_from_form(form=form)
         flash(f'Account created for {form.first_name.data}!', 'success')
         return redirect(url_for('home'))
-    return render_template(template_name_or_list='register.html', form=form)
+    return render_template(template_name_or_list='register.html', form=form, stats=stats)
 
 
 @app.route('/register/dog', methods=['GET', 'POST'])
