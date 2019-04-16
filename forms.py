@@ -103,13 +103,18 @@ class ReservationForm(FlaskForm):
 
 
 class RoomPriceForm(FlaskForm):
+    # Manager credentials
+    email = StringField(label='Manager Email', validators=[DataRequired(), Email()])
+
+    password = PasswordField(label='Manager Password', validators=[DataRequired()])
+
     # Room information
     room_price = FloatField(label='New Price', validators=[DataRequired()])
 
     room_type = IntegerField(label='Room Type', validators=[DataRequired()])
 
     # Submit changes
-    submit = SubmitField(label='Make Reservation')
+    submit = SubmitField(label='Submit Price Changes')
 
 
 class LoginForm(FlaskForm):
