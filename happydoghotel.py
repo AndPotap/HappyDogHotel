@@ -12,7 +12,6 @@ This script contains all the URLs for the Happy Dog Hotel Web app
 from flask import Flask
 from flask import render_template
 from forms import RegistrationForm
-from forms import LoginForm
 from forms import DogRegistrationForm
 from forms import EmployeeRegistrationForm
 from forms import ReservationForm
@@ -103,8 +102,7 @@ def register_employee():
 
 @app.route('/login')
 def login():
-    form = LoginForm()
-    return render_template(template_name_or_list='login.html', form=form)
+    return render_template('index.html')
 # ===========================================================================
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # ===========================================================================
