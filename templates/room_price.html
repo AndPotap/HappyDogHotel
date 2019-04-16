@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %} <!--- Start of block content --->
+    <div class="content-section">
+        <form method="POST" action="">  <!--- Form Fields --->
+            {{ form.hidden_tag() }}
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    {{ form.email.label(class="form-control-label")}}
+                    {{ form.email(class="form-control", placeholder="happydog@gmail.com")}}
+                </div>
+                <div class="form-group col-md-6">
+                    {{ form.password.label(class="form-control-label")}}
+                    {{ form.password(class="form-control", placeholder="Password")}}
+                </div>
+            </div> <!--- End of email / password --->
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    {{ form.room_type.label(class="form-control-label")}}
+                    {{ form.room_type(class="form-control", placeholder="1 / 2 / 3")}}
+                </div>
+                <div class="form-group col-md-6">
+                    {{ form.room_price.label(class="form-control-label")}}
+                    {{ form.room_price(class="form-control", placeholder="99.99")}}
+                </div>
+            </div> <!--- End of email / password --->
+
+          <div class="from-group">
+              {{ form.submit(class="btn btn-outline-info") }}
+          </div>
+
+        </form> <!--- End of Form Fields --->
+    </div>
+    <!--- Add the Final Properties --->
+    <br>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            Already Have an Account? <a class="ml-2" href="{{ url_for('login') }}">
+            Sign In
+        </a>
+        </small>
+    </div> <!--- End of Bottom Properties --->
+{% endblock content %} <!--- End of Block Content --->
