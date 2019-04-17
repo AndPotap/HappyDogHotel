@@ -60,16 +60,18 @@ def register():
 @app.route('/register/dog', methods=['GET', 'POST'])
 def register_dog():
     form = DogRegistrationForm()
+    stats = db.compute_stats_for_sidebar()
     if form.validate_on_submit():
         db.insert_into_dogs_from_form(form=form)
         flash(f'Account created for {form.dog_name.data}!', 'success')
         return redirect(url_for('home'))
-    return render_template(template_name_or_list='register_dog.html', form=form)
+    return render_template(template_name_or_list='register_dog.html', form=form, stats=stats)
 
 
 @app.route('/reserve', methods=['GET', 'POST'])
 def reserve():
     form = ReservationForm()
+    stats = db.compute_stats_for_sidebar()
     if form.validate_on_submit():
         found_room = db.insert_booking_from_form(form=form)
         if found_room:
@@ -77,29 +79,31 @@ def reserve():
         else:
             flash('No room for that period! Please check other room type or'
                   'dates', 'error')
-    return render_template(template_name_or_list='reserve.html', form=form)
+    return render_template(template_name_or_list='reserve.html', form=form, stats=stats)
 
 
 @app.route('/room/price', methods=['GET', 'POST'])
 def room_price():
     form = RoomPriceForm()
+    stats = db.compute_stats_for_sidebar()
     if form.validate_on_submit():
         email, password = form.email.data, form.password.data
         if email == 'ap3635@gmail.com' and password == 'ap3635':
             db.update_room_type_price_with_form(form=form)
             return redirect(url_for('home'))
-    return render_template(template_name_or_list='room_price.html', form=form)
+    return render_template(template_name_or_list='room_price.html', form=form, stats=stats)
 
 
 @app.route('/register/employee', methods=['GET', 'POST'])
 def register_employee():
     form = EmployeeRegistrationForm()
+    stats = db.compute_stats_for_sidebar()
     if form.validate_on_submit():
         email, password = form.email.data, form.password.data
         if email == 'ap3635@gmail.com' and password == 'ap3635':
             db.insert_employee_from_form(form=form)
             return redirect(url_for('home'))
-    return render_template(template_name_or_list='register_employee.html', form=form)
+    return render_template(template_name_or_list='register_employee.html', form=form, stats=stats)
 
 
 @app.route('/login')
